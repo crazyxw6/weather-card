@@ -9,20 +9,63 @@
     <title>天气卡片</title>
     <style>
         :root {
+            color-scheme: dark;
             --bg: #030303;
+            --page-bg: #030303;
+            --star-bg: radial-gradient(circle at 50% 18%, #101722 0%, #050505 45%, #010101 100%);
+            --star-rgb: 245, 245, 247;
+            --link-rgb: 56, 189, 248;
             --panel: rgba(18, 18, 20, .48);
             --panel-2: rgba(255, 255, 255, .055);
             --panel-3: rgba(255, 255, 255, .08);
+            --panel-pop: rgba(12, 12, 14, .78);
             --line: rgba(255, 255, 255, .16);
             --line-soft: rgba(255, 255, 255, .09);
             --text: #f5f5f7;
             --sub: #b8b8bd;
             --muted: #7d7d84;
             --accent: #38bdf8;
+            --accent-soft: rgba(56, 189, 248, .16);
             --green: #30d158;
             --danger: #ff453a;
+            --control-bg: rgba(12, 12, 14, .62);
+            --control-active-bg: rgba(18, 24, 28, .7);
+            --card-bg: linear-gradient(180deg, rgba(255, 255, 255, .07), rgba(255, 255, 255, .035));
+            --item-bg: rgba(255, 255, 255, .045);
+            --icon-bg: rgba(255, 255, 255, .055);
+            --aqi-bg: rgba(48, 209, 88, .13);
+            --shadow: 0 22px 70px rgba(0, 0, 0, .24);
             --radius: 8px;
             --blur: blur(24px) saturate(160%);
+        }
+
+        :root[data-theme="light"] {
+            color-scheme: light;
+            --bg: #f5f5f7;
+            --page-bg: #f5f5f7;
+            --star-bg: radial-gradient(circle at 50% 18%, #ffffff 0%, #f5f7fb 45%, #eef1f6 100%);
+            --star-rgb: 87, 96, 112;
+            --link-rgb: 0, 122, 255;
+            --panel: rgba(255, 255, 255, .54);
+            --panel-2: rgba(0, 0, 0, .045);
+            --panel-3: rgba(0, 0, 0, .065);
+            --panel-pop: rgba(255, 255, 255, .78);
+            --line: rgba(0, 0, 0, .12);
+            --line-soft: rgba(0, 0, 0, .08);
+            --text: #1d1d1f;
+            --sub: #424245;
+            --muted: #6e6e73;
+            --accent: #007aff;
+            --accent-soft: rgba(0, 122, 255, .12);
+            --green: #248a3d;
+            --danger: #ff3b30;
+            --control-bg: rgba(255, 255, 255, .66);
+            --control-active-bg: rgba(232, 244, 255, .78);
+            --card-bg: linear-gradient(180deg, rgba(255, 255, 255, .76), rgba(255, 255, 255, .46));
+            --item-bg: rgba(0, 0, 0, .045);
+            --icon-bg: rgba(0, 0, 0, .05);
+            --aqi-bg: rgba(36, 138, 61, .12);
+            --shadow: 0 22px 70px rgba(31, 35, 42, .12);
         }
 
         * {
@@ -48,7 +91,7 @@
 
         body {
             min-height: 100vh;
-            background: #030303;
+            background: var(--page-bg);
             color: var(--text);
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Microsoft YaHei", sans-serif;
             display: flex;
@@ -56,6 +99,7 @@
             padding: 18px;
             line-height: 1.45;
             overflow-x: hidden;
+            transition: background .25s ease, color .25s ease;
         }
 
         #starfield {
@@ -65,7 +109,8 @@
             height: 100%;
             z-index: 0;
             pointer-events: none;
-            background: radial-gradient(circle at 50% 18%, #101722 0%, #050505 45%, #010101 100%);
+            background: var(--star-bg);
+            transition: background .25s ease;
         }
 
         .wrap {
@@ -80,10 +125,10 @@
 
         .top {
             display: grid;
-            grid-template-columns: auto 1fr minmax(240px, 340px) auto auto;
+            grid-template-columns: auto 1fr minmax(240px, 340px) auto auto auto;
             grid-template-areas:
-                "title space music city refresh"
-                "stamp space music city refresh";
+                "title space music city theme refresh"
+                "stamp space music city theme refresh";
             align-items: center;
             gap: 4px 10px;
             padding: 2px 2px 8px;
@@ -104,9 +149,10 @@
 
         .music-player,
         .city-trigger,
+        .theme-toggle,
         .refresh {
             border: 1px solid var(--line-soft);
-            background: rgba(12, 12, 14, .62);
+            background: var(--control-bg);
             backdrop-filter: var(--blur);
             -webkit-backdrop-filter: var(--blur);
         }
@@ -125,7 +171,7 @@
 
         .music-player.playing {
             border-color: rgba(56, 189, 248, .55);
-            background: rgba(18, 24, 28, .7);
+            background: var(--control-active-bg);
         }
 
         .music-toggle {
@@ -133,7 +179,7 @@
             height: 25px;
             border: 0;
             border-radius: 999px;
-            background: rgba(56, 189, 248, .18);
+            background: var(--accent-soft);
             color: var(--accent);
             font-size: 11px;
             font-weight: 800;
@@ -199,12 +245,34 @@
             white-space: nowrap;
         }
 
+        .theme-toggle {
+            grid-area: theme;
+            width: 36px;
+            height: 36px;
+            border-radius: 999px;
+            color: var(--text);
+            font-size: 15px;
+            flex-shrink: 0;
+        }
+
+        .refresh {
+            grid-area: refresh;
+            width: 36px;
+            height: 36px;
+            border-radius: 999px;
+            color: var(--text);
+            font-size: 16px;
+            flex-shrink: 0;
+        }
+
         .city-trigger:hover,
+        .theme-toggle:hover,
         .refresh:hover {
             border-color: rgba(56, 189, 248, .55);
         }
 
         .city-trigger:active,
+        .theme-toggle:active,
         .refresh:active {
             transform: scale(.97);
         }
@@ -216,11 +284,11 @@
             width: 280px;
             max-height: 340px;
             overflow-y: auto;
-            background: rgba(12, 12, 14, .78);
+            background: var(--panel-pop);
             border: 1px solid var(--line);
             border-radius: var(--radius);
             padding: 10px;
-            box-shadow: 0 20px 60px rgba(0, 0, 0, .42);
+            box-shadow: var(--shadow);
             z-index: 50;
             display: none;
             backdrop-filter: var(--blur);
@@ -248,7 +316,7 @@
             padding: 8px 4px;
             text-align: center;
             border-radius: 6px;
-            background: rgba(255, 255, 255, .06);
+            background: var(--item-bg);
             border: 1px solid transparent;
             font-size: 12px;
             color: var(--sub);
@@ -256,24 +324,14 @@
 
         .city-item:hover {
             color: var(--text);
-            border-color: rgba(255, 255, 255, .16);
+            border-color: var(--line);
         }
 
         .city-item.on {
-            background: rgba(56, 189, 248, .14);
+            background: var(--accent-soft);
             border-color: rgba(56, 189, 248, .65);
             color: var(--accent);
             font-weight: 700;
-        }
-
-        .refresh {
-            grid-area: refresh;
-            width: 36px;
-            height: 36px;
-            border-radius: 999px;
-            color: var(--text);
-            font-size: 16px;
-            flex-shrink: 0;
         }
 
         #content {
@@ -289,13 +347,14 @@
         }
 
         .card {
-            background: linear-gradient(180deg, rgba(255, 255, 255, .07), rgba(255, 255, 255, .035));
+            background: var(--card-bg);
             border: 1px solid var(--line);
             border-radius: var(--radius);
             padding: 18px;
-            box-shadow: 0 22px 70px rgba(0, 0, 0, .24);
+            box-shadow: var(--shadow);
             backdrop-filter: var(--blur);
             -webkit-backdrop-filter: var(--blur);
+            transition: background .25s ease, border-color .25s ease, box-shadow .25s ease;
         }
 
         .now-card {
@@ -341,7 +400,7 @@
             align-items: center;
             justify-content: center;
             border-radius: var(--radius);
-            background: rgba(255, 255, 255, .055);
+            background: var(--icon-bg);
             font-size: 58px;
             line-height: 1;
             flex-shrink: 0;
@@ -384,7 +443,7 @@
             min-width: 0;
             padding: 8px 10px;
             border-radius: 6px;
-            background: rgba(255, 255, 255, .045);
+            background: var(--item-bg);
         }
 
         .now-meta b {
@@ -430,7 +489,7 @@
             border-radius: 999px;
             font-size: 14px;
             font-weight: 700;
-            background: rgba(48, 209, 88, .13);
+            background: var(--aqi-bg);
             color: var(--green);
         }
 
@@ -468,7 +527,7 @@
             color: var(--muted);
             padding: 10px 6px;
             border-radius: 6px;
-            background: rgba(255, 255, 255, .045);
+            background: var(--item-bg);
             scroll-snap-align: start;
         }
 
@@ -549,7 +608,7 @@
         }
 
         .idx {
-            background: rgba(255, 255, 255, .045);
+            background: var(--item-bg);
             border-radius: 6px;
             padding: 10px;
             font-size: 12px;
@@ -622,11 +681,11 @@
 
         @media (max-width: 1180px) {
             .top {
-                grid-template-columns: auto 1fr auto auto;
+                grid-template-columns: auto 1fr auto auto auto;
                 grid-template-areas:
-                    "title space city refresh"
-                    "stamp space city refresh"
-                    "music music music music";
+                    "title space city theme refresh"
+                    "stamp space city theme refresh"
+                    "music music music music music";
             }
 
             .music-player {
@@ -664,11 +723,11 @@
             }
 
             .top {
-                grid-template-columns: 1fr auto auto;
+                grid-template-columns: 1fr auto auto auto;
                 grid-template-areas:
-                    "title city refresh"
-                    "stamp stamp stamp"
-                    "music music music";
+                    "title city theme refresh"
+                    "stamp stamp stamp stamp"
+                    "music music music music";
             }
 
             .top h1 {
@@ -727,7 +786,7 @@
             }
 
             .city-panel {
-                right: -44px;
+                right: -84px;
                 width: min(280px, calc(100vw - 24px));
             }
         }
@@ -758,6 +817,7 @@
                 </div>
             </div>
 
+            <button class="theme-toggle" id="themeToggle" type="button" aria-label="切换浅色模式">☾</button>
             <button class="refresh" id="refresh">↻</button>
             <div class="stamp" id="stamp"></div>
         </div>
@@ -995,6 +1055,27 @@
                 }
             }
 
+            function setupTheme() {
+                var toggle = document.getElementById('themeToggle');
+                if (!toggle) return;
+
+                function applyTheme(theme) {
+                    document.documentElement.dataset.theme = theme;
+                    toggle.textContent = theme === 'light' ? '☀' : '☾';
+                    toggle.title = theme === 'light' ? '浅色模式' : '深色模式';
+                    toggle.setAttribute('aria-label', theme === 'light' ? '切换深色模式' : '切换浅色模式');
+                }
+
+                var saved = localStorage.getItem('weatherCardTheme') || 'dark';
+                applyTheme(saved === 'light' ? 'light' : 'dark');
+
+                toggle.addEventListener('click', function() {
+                    var next = document.documentElement.dataset.theme === 'light' ? 'dark' : 'light';
+                    localStorage.setItem('weatherCardTheme', next);
+                    applyTheme(next);
+                });
+            }
+
             function startStarfield() {
                 var canvas = document.getElementById('starfield');
                 if (!canvas) return;
@@ -1027,6 +1108,10 @@
                 }
 
                 function draw() {
+                    var styles = getComputedStyle(document.documentElement);
+                    var starRgb = styles.getPropertyValue('--star-rgb').trim() || '245, 245, 247';
+                    var linkRgb = styles.getPropertyValue('--link-rgb').trim() || '56, 189, 248';
+
                     ctx.clearRect(0, 0, window.innerWidth, window.innerHeight);
 
                     for (var i = 0; i < stars.length; i++) {
@@ -1047,14 +1132,14 @@
                             ctx.beginPath();
                             ctx.moveTo(mouse.x, mouse.y);
                             ctx.lineTo(s.x, s.y);
-                            ctx.strokeStyle = 'rgba(56, 189, 248, ' + (1 - dist / 120) * .16 + ')';
+                            ctx.strokeStyle = 'rgba(' + linkRgb + ', ' + (1 - dist / 120) * .16 + ')';
                             ctx.lineWidth = 1;
                             ctx.stroke();
                         }
 
                         ctx.beginPath();
                         ctx.arc(s.x, s.y, s.r, 0, Math.PI * 2);
-                        ctx.fillStyle = 'rgba(245, 245, 247, ' + s.a + ')';
+                        ctx.fillStyle = 'rgba(' + starRgb + ', ' + s.a + ')';
                         ctx.fill();
                     }
 
@@ -1195,6 +1280,7 @@
 
             document.getElementById('refresh').addEventListener('click', refreshData);
 
+            setupTheme();
             setupMusic();
             startStarfield();
             renderCityMenu('01012601', '');
