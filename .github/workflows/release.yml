@@ -4,9 +4,9 @@ on:
   workflow_dispatch:
     inputs:
       version:
-        description: '版本号，例如 v1.0.3'
+        description: '版本号，例如 v1.0.4'
         required: true
-        default: 'v1.0.3'
+        default: 'v1.0.4'
 
 permissions:
   contents: write
@@ -41,6 +41,7 @@ jobs:
 
           @"
           <Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+            <Import Project="`$(MSBuildToolsPath)\Microsoft.Common.props" Condition="Exists('`$(MSBuildToolsPath)\Microsoft.Common.props')" />
             <PropertyGroup>
               <Configuration Condition=" '`$(Configuration)' == '' ">Release</Configuration>
               <Platform Condition=" '`$(Platform)' == '' ">AnyCPU</Platform>
@@ -52,6 +53,12 @@ jobs:
               <PlatformTarget>x64</PlatformTarget>
               <Prefer32Bit>false</Prefer32Bit>
               <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
+            </PropertyGroup>
+            <PropertyGroup Condition="'`$(Configuration)|`$(Platform)' == 'Release|AnyCPU'">
+              <OutputPath>bin\Release\</OutputPath>
+            </PropertyGroup>
+            <PropertyGroup Condition="'`$(Configuration)|`$(Platform)' == 'Debug|AnyCPU'">
+              <OutputPath>bin\Debug\</OutputPath>
             </PropertyGroup>
             <ItemGroup>
               <Reference Include="System" />
@@ -133,7 +140,12 @@ jobs:
           }
           "@ | Set-Content -Path build\WeatherCard\Program.cs -Encoding UTF8
 
-          msbuild build\WeatherCard\WeatherCard.csproj /restore /p:Configuration=Release /p:Platform=AnyCPU /p:OutDir="$outDir"
+          msbuild build\WeatherCard\WeatherCard.csproj /restore /p:Configuration=Release /p:Platform=AnyCPU "/p:OutputPath=$outDir" "/p:OutDir=$outDir"
+
+          if (-not (Test-Path dist\weather-card-windows\WeatherCard.exe)) {
+            Get-ChildItem dist\weather-card-windows -Recurse
+            throw "没有找到 WeatherCard.exe，打包停止。"
+          }
 
           @"
           天气卡片 Windows 软件版
