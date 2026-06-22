@@ -225,6 +225,120 @@
             accent-color: var(--accent);
             flex-shrink: 0;
         }
+        .lyrics-dock {
+            --lyric-progress: 0%;
+            display: grid;
+            grid-template-columns: 180px minmax(0, 1fr) 86px;
+            align-items: center;
+            gap: 18px;
+            min-height: 126px;
+            padding: 18px 20px;
+            border: 1px solid var(--line);
+            border-radius: var(--radius);
+            background: var(--card-bg);
+            box-shadow: var(--shadow);
+            backdrop-filter: var(--blur);
+            -webkit-backdrop-filter: var(--blur);
+        }
+
+        .lyrics-label span {
+            display: block;
+            color: var(--muted);
+            font-size: 11px;
+            font-weight: 700;
+            letter-spacing: .08em;
+        }
+
+        .lyrics-label strong {
+            display: block;
+            margin-top: 6px;
+            color: var(--text);
+            font-size: 15px;
+            line-height: 1.25;
+        }
+
+        .lyrics-label em {
+            display: block;
+            margin-top: 3px;
+            color: var(--muted);
+            font-size: 12px;
+            font-style: normal;
+        }
+
+        .lyrics-stage {
+            min-width: 0;
+            text-align: center;
+        }
+
+        .lyric-near {
+            height: 20px;
+            color: var(--muted);
+            font-size: 12px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            opacity: .72;
+        }
+
+        .lyric-current {
+            padding: 7px 0;
+        }
+
+        .lyric-kr-wrap {
+            position: relative;
+            display: inline-block;
+            max-width: 100%;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            vertical-align: top;
+        }
+
+        .lyric-kr-base,
+        .lyric-kr-fill {
+            display: block;
+            font-size: 25px;
+            font-weight: 800;
+            letter-spacing: 0;
+            line-height: 1.18;
+            white-space: nowrap;
+        }
+
+        .lyric-kr-base {
+            color: var(--text);
+            opacity: .34;
+        }
+
+        .lyric-kr-fill {
+            position: absolute;
+            inset: 0 auto auto 0;
+            width: var(--lyric-progress);
+            max-width: 100%;
+            color: var(--accent);
+            overflow: hidden;
+            text-shadow: 0 0 22px rgba(56, 189, 248, .25);
+        }
+
+        .lyric-cn {
+            margin-top: 7px;
+            color: var(--sub);
+            font-size: 15px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .lyrics-clock {
+            justify-self: end;
+            min-width: 72px;
+            padding: 8px 10px;
+            border-radius: 999px;
+            background: var(--item-bg);
+            color: var(--muted);
+            font-size: 12px;
+            font-variant-numeric: tabular-nums;
+            text-align: center;
+        }
 
         .city-select {
             grid-area: city;
@@ -694,6 +808,14 @@
                 margin-top: 6px;
             }
 
+            .lyrics-dock {
+                grid-template-columns: 150px minmax(0, 1fr);
+            }
+
+            .lyrics-clock {
+                display: none;
+            }
+
             #content {
                 grid-template-columns: repeat(2, minmax(0, 1fr));
                 grid-template-areas:
@@ -741,6 +863,26 @@
 
             .volume {
                 width: 92px;
+            }
+
+            .lyrics-dock {
+                grid-template-columns: 1fr;
+                min-height: 0;
+                padding: 16px;
+                gap: 12px;
+            }
+
+            .lyrics-label {
+                text-align: center;
+            }
+
+            .lyric-kr-base,
+            .lyric-kr-fill {
+                font-size: 21px;
+            }
+
+            .lyric-cn {
+                font-size: 14px;
             }
 
             #content {
@@ -821,7 +963,25 @@
             <button class="refresh" id="refresh">↻</button>
             <div class="stamp" id="stamp"></div>
         </div>
-
+        <div class="lyrics-dock" id="lyricsDock">
+            <div class="lyrics-label">
+                <span>SYNCED LYRICS</span>
+                <strong>이별을 걷는다</strong>
+                <em>走向离别</em>
+            </div>
+            <div class="lyrics-stage">
+                <div class="lyric-near" id="lyricPrev">准备播放歌词</div>
+                <div class="lyric-current">
+                    <div class="lyric-kr-wrap">
+                        <span class="lyric-kr-base" id="lyricCurrentKr">点击播放音乐</span>
+                        <span class="lyric-kr-fill" id="lyricCurrentKrFill">点击播放音乐</span>
+                    </div>
+                    <div class="lyric-cn" id="lyricCurrentCn">歌词会跟随音乐同步显示</div>
+                </div>
+                <div class="lyric-near" id="lyricNext">中韩双语 KTV 模式</div>
+            </div>
+            <div class="lyrics-clock" id="lyricClock">00:00</div>
+        </div>
         <div id="content">
             <div class="loading">
                 <div class="dot"></div>
@@ -1160,6 +1320,90 @@
                 draw();
             }
 
+
+            var LYRICS_LRC = "[ti:이별을 걷는다 (走向离别)]\r\n[ar:모던 쥬스 (Modern Juice)]\r\n[al:장미빛 연인들 OST (蔷薇色的恋人们 OST)]\r\n[by:YourName]\r\n[00:00.00]이별을 걷는다 - 모던 쥬스\r\n[00:15.00]가끔 생각이 날 때, / 偶尔想起你的时候\r\n[00:18.00]자꾸 보고 싶을 때, / 总是想见你的时候\r\n[00:22.00]너의 얼굴이 아른거릴 때, / 你的脸庞在眼前若隐若现的时候\r\n[00:29.00]고장 난 시계처럼, / 就像坏掉的时钟一样\r\n[00:32.00]멈춰버린 기억 속에서, / 在已经静止的记忆中\r\n[00:36.00]너를 찾아내곤 해, / 我总会去寻觅你的身影\r\n[00:43.00]너는 웃고 있지만 슬퍼 보여, / 即使你笑着，却看起来很悲伤\r\n[00:50.00]애써 참고 있지만 아파 보여, / 即使你努力忍耐，却看起来很痛苦\r\n[00:56.00]미처 내가 몰랐던 너의 사랑을, / 我曾经未曾察觉到的，你的爱\r\n[01:03.00]이제 하나하나씩 느껴, / 现在我一点一滴地感受到了\r\n[01:10.00]내 사랑이 조금 느려서, / 因为我的爱有些迟钝\r\n[01:16.00]이제야 너를 따라서, / 直到现在才跟随着你\r\n[01:23.00]한걸음 또 한걸음 이별을 걷는다, / 一步又一步地走向离别\r\n[01:31.00]그 오랜 시간이 걸려도, / 即使要花上漫长的时间\r\n[01:38.00]언제나 너의 뒤에서, / 我也会一直在你身后\r\n[01:44.00]돌아와 주길 기다려본다, / 等待着你能回来\r\n[01:50.00]이 곳에서, / 就在这里\r\n[02:04.00]가슴이 답답하고, / 当胸口感到发闷\r\n[02:08.00]마음이 또 먹먹해지면, / 当心里又变得沉甸甸时\r\n[02:12.00]니가 니가 그립다, / 我想念你，想念着你\r\n[02:18.00]오래된 필름처럼 따스하게, / 像老胶片一样温暖地\r\n[02:25.00]나를 사랑해주던 니 모습이, / 你曾经爱过我的模样\r\n[02:32.00]너무나도 선명해 손 내밀면, / 如此清晰，仿佛一伸手\r\n[02:38.00]손 끝에 닿을 것만 같아, / 就能触碰到指尖\r\n[02:44.00]내 사랑이 너를 부른다, / 我的爱在呼唤你\r\n[02:51.00]이제야 너를 찾는다, / 直到现在才开始寻找你\r\n[02:58.00]한번만 꼭 한 번만 널 보고 싶다고, / 想见你一面，哪怕就只有一次\r\n[03:06.00]그 오랜 시간이 걸려도, / 即使要花上漫长的时间\r\n[03:12.00]언제나 너의 뒤에서, / 我也会一直在你身后\r\n[03:19.00]돌아와 주길 기다려본다, / 等待着你能回来\r\n[03:25.00]이 곳에서, / 就在这里\r\n[03:29.00]니가 아니면, / 如果不是你\r\n[03:32.00]그 누구도 빈자리를 채울 수 없어, / 谁也无法填补这空缺\r\n[03:38.00]그게 바로 너여야 해, / 那个人必须是你\r\n[03:41.00]너여야만 해, / 只能是你\r\n[03:45.00]내 사랑이 조금 느려서, / 因为我的爱有些迟钝\r\n[03:52.00]이제야 너를 따라서, / 直到现在才跟随着你\r\n[03:59.00]한걸음 또 한걸음 이별을 걷는다, / 一步又一步地走向离别\r\n[04:06.00]그 오랜 시간이 걸려도, / 即使要花上漫长的时间\r\n[04:13.00]언제나 너의 뒤에서, / 我也会一直在你身后\r\n[04:20.00]돌아와 주길 기다려본다, / 等待着你能回来\r\n[04:26.00]이 곳에서, / 就在这里\r\n[04:30.00]이 곳에서, / 就在这里\r\n[04:35.00]이 곳에서, / 就在这里";
+
+            function parseLyrics(lrc) {
+                return lrc.split(/\r?\n/).map(function(line) {
+                    var match = line.match(/^\[(\d{2}):(\d{2}(?:\.\d+)?)\](.*)$/);
+                    if (!match) return null;
+
+                    var text = match[3].trim();
+                    if (!text) return null;
+
+                    var parts = text.split(/\s+\/\s+/);
+                    return {
+                        time: Number(match[1]) * 60 + Number(match[2]),
+                        kr: (parts[0] || '').trim(),
+                        cn: (parts[1] || '').trim()
+                    };
+                }).filter(Boolean).sort(function(a, b) {
+                    return a.time - b.time;
+                });
+            }
+
+            function formatLyricTime(seconds) {
+                var total = Math.max(0, Math.floor(seconds || 0));
+                var m = String(Math.floor(total / 60)).padStart(2, '0');
+                var s = String(total % 60).padStart(2, '0');
+                return m + ':' + s;
+            }
+
+            function setupLyrics(audio) {
+                var dock = document.getElementById('lyricsDock');
+                var prev = document.getElementById('lyricPrev');
+                var currentKr = document.getElementById('lyricCurrentKr');
+                var currentKrFill = document.getElementById('lyricCurrentKrFill');
+                var currentCn = document.getElementById('lyricCurrentCn');
+                var next = document.getElementById('lyricNext');
+                var clock = document.getElementById('lyricClock');
+                var lines = parseLyrics(LYRICS_LRC);
+                var activeIndex = -1;
+
+                if (!dock || !audio || !lines.length) return;
+
+                function setLine(index) {
+                    var line = lines[index] || lines[0];
+                    var before = lines[index - 1];
+                    var after = lines[index + 1];
+
+                    prev.textContent = before ? before.kr + (before.cn ? ' / ' + before.cn : '') : 'Walking without U';
+                    currentKr.textContent = line.kr || '♪';
+                    currentKrFill.textContent = line.kr || '♪';
+                    currentCn.textContent = line.cn || 'MODERN JUICE';
+                    next.textContent = after ? after.kr + (after.cn ? ' / ' + after.cn : '') : '歌词结束';
+                }
+
+                function findLineIndex(time) {
+                    var index = 0;
+                    for (var i = 0; i < lines.length; i++) {
+                        if (time >= lines[i].time) index = i;
+                        else break;
+                    }
+                    return index;
+                }
+
+                function tick() {
+                    var time = audio.currentTime || 0;
+                    var index = findLineIndex(time);
+                    var line = lines[index];
+                    var nextLine = lines[index + 1];
+                    var duration = nextLine ? Math.max(.1, nextLine.time - line.time) : 4;
+                    var progress = Math.max(0, Math.min(1, (time - line.time) / duration));
+
+                    if (index !== activeIndex) {
+                        activeIndex = index;
+                        setLine(index);
+                    }
+
+                    dock.style.setProperty('--lyric-progress', (progress * 100).toFixed(2) + '%');
+                    if (clock) clock.textContent = formatLyricTime(time);
+                    requestAnimationFrame(tick);
+                }
+
+                setLine(0);
+                tick();
+            }
             function setupMusic() {
                 var player = document.getElementById('musicPlayer');
                 var audio = document.getElementById('bgMusic');
@@ -1169,6 +1413,8 @@
                 var status = document.getElementById('musicStatus');
 
                 if (!player || !audio || !toggle || !volume) return;
+
+                setupLyrics(audio);
 
                 var defaultVolume = 0.18;
                 var savedVolume = localStorage.getItem('weatherCardVolumeV2');
@@ -1289,3 +1535,5 @@
     </script>
 </body>
 </html>
+
+
