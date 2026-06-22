@@ -1,12 +1,12 @@
-name: 生成 Windows Release
+name: Build Windows Release
 
 on:
   workflow_dispatch:
     inputs:
       version:
-        description: '版本号，例如 v1.0.4'
+        description: 'Version, for example v1.0.5'
         required: true
-        default: 'v1.0.4'
+        default: 'v1.0.5'
 
 permissions:
   contents: write
@@ -15,13 +15,13 @@ jobs:
   release:
     runs-on: windows-latest
     steps:
-      - name: 取出仓库文件
+      - name: Check out repository
         uses: actions/checkout@v4
 
-      - name: 准备 MSBuild
+      - name: Set up MSBuild
         uses: microsoft/setup-msbuild@v2
 
-      - name: 生成 Windows 软件
+      - name: Build Windows app
         shell: pwsh
         run: |
           $ErrorActionPreference = 'Stop'
@@ -103,7 +103,7 @@ jobs:
 
                   public MainForm()
                   {
-                      Text = "天气卡片";
+                      Text = "Weather Card";
                       StartPosition = FormStartPosition.CenterScreen;
                       Size = new Size(460, 760);
                       MinimumSize = new Size(380, 560);
@@ -123,8 +123,8 @@ jobs:
                           catch
                           {
                               MessageBox.Show(
-                                  "这个软件需要 Microsoft Edge WebView2 Runtime。请先安装它，或更新 Microsoft Edge。",
-                                  "天气卡片",
+                                  "This app requires Microsoft Edge WebView2 Runtime. Please update Microsoft Edge or install WebView2 Runtime.",
+                                  "Weather Card",
                                   MessageBoxButtons.OK,
                                   MessageBoxIcon.Information);
                               Process.Start(new ProcessStartInfo
@@ -144,27 +144,27 @@ jobs:
 
           if (-not (Test-Path dist\weather-card-windows\WeatherCard.exe)) {
             Get-ChildItem dist\weather-card-windows -Recurse
-            throw "没有找到 WeatherCard.exe，打包停止。"
+            throw "WeatherCard.exe was not found. Packaging stopped."
           }
 
           @"
-          天气卡片 Windows 软件版
+          Weather Card for Windows
 
-          使用方法：
-          1. 解压 weather-card-windows.zip。
-          2. 双击 WeatherCard.exe。
-          3. 天气卡片会在独立软件窗口中打开，不会显示浏览器地址栏。
+          How to use:
+          1. Extract weather-card-windows.zip.
+          2. Double-click WeatherCard.exe.
+          3. Weather Card will open in a standalone app window.
 
-          说明：
-          - 这个软件需要联网使用。
-          - 天气数据由 GitHub Actions 定时更新。
-          - 如果打不开，请更新 Microsoft Edge，或安装 Microsoft Edge WebView2 Runtime。
+          Notes:
+          - This app requires an internet connection.
+          - Weather data is updated by GitHub Actions.
+          - If the app does not open, update Microsoft Edge or install Microsoft Edge WebView2 Runtime.
           "@ | Set-Content -Path dist\weather-card-windows\README.txt -Encoding UTF8
 
           Compress-Archive -Path dist\weather-card-windows -DestinationPath dist\weather-card-windows.zip -Force
           "VERSION=$version" | Out-File -FilePath $env:GITHUB_ENV -Append
 
-      - name: 发布 Release
+      - name: Publish release
         shell: pwsh
         env:
           GH_TOKEN: ${{ github.token }}
@@ -181,5 +181,6 @@ jobs:
           if ($releaseExists) {
             gh release upload $env:VERSION dist\weather-card-windows.zip --clobber
           } else {
-            gh release create $env:VERSION dist\weather-card-windows.zip --title "天气卡片 Windows $env:VERSION" --notes "下载 weather-card-windows.zip，解压后双击 WeatherCard.exe。"
+            gh release create $env:VERSION dist\weather-card-windows.zip --title "Weather Card for Windows $env:VERSION" --notes "Download weather-card-windows.zip, extract it, and double-click WeatherCard.exe."
           }
+
