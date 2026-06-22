@@ -4,74 +4,172 @@ on:
   workflow_dispatch:
     inputs:
       version:
-        description: '版本号，例如 v1.0.1'
+        description: '版本号，例如 v1.0.2'
         required: true
-        default: 'v1.0.1'
+        default: 'v1.0.2'
 
 permissions:
   contents: write
 
 jobs:
   release:
-    runs-on: ubuntu-latest
+    runs-on: windows-latest
     steps:
       - name: 取出仓库文件
         uses: actions/checkout@v4
 
-      - name: 准备 Go
-        uses: actions/setup-go@v5
-        with:
-          go-version: '1.22'
+      - name: 准备 MSBuild
+        uses: microsoft/setup-msbuild@v2
 
-      - name: 生成 Windows exe
+      - name: 生成 Windows 软件
+        shell: pwsh
         run: |
-          set -e
-          VERSION="${{ github.event.inputs.version }}"
-          OWNER="${GITHUB_REPOSITORY_OWNER}"
-          REPO="${GITHUB_REPOSITORY#*/}"
-          if [ "$REPO" = "$OWNER.github.io" ]; then
-            PAGE_URL="https://${OWNER}.github.io/"
-          else
-            PAGE_URL="https://${OWNER}.github.io/${REPO}/"
-          fi
+          $ErrorActionPreference = 'Stop'
 
-          mkdir -p dist/weather-card-windows build
-          cat > build/main.go <<EOF
-          package main
+          $version = '${{ github.event.inputs.version }}'
+          $owner = '${{ github.repository_owner }}'
+          $repo = '${{ github.event.repository.name }}'
 
-          import (
-            "os/exec"
-          )
-
-          func main() {
-            exec.Command("rundll32", "url.dll,FileProtocolHandler", "$PAGE_URL").Start()
+          if ($repo -eq "$owner.github.io") {
+            $pageUrl = "https://$owner.github.io/"
+          } else {
+            $pageUrl = "https://$owner.github.io/$repo/"
           }
-          EOF
 
-          GOOS=windows GOARCH=amd64 go build -ldflags="-H windowsgui -s -w" -o dist/weather-card-windows/WeatherCard.exe build/main.go
-          cat > dist/weather-card-windows/README.txt <<EOF
-          天气卡片 Windows 版
+          New-Item -ItemType Directory -Force -Path build\WeatherCard, dist\weather-card-windows | Out-Null
+
+          @"
+          <Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+            <Import Project="`$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+            <PropertyGroup>
+              <Configuration Condition=" '`$(Configuration)' == '' ">Release</Configuration>
+              <Platform Condition=" '`$(Platform)' == '' ">AnyCPU</Platform>
+              <OutputType>WinExe</OutputType>
+              <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
+              <OutputPath>bin\Release\</OutputPath>
+              <RootNamespace>WeatherCard</RootNamespace>
+              <AssemblyName>WeatherCard</AssemblyName>
+              <UseWindowsForms>true</UseWindowsForms>
+              <PlatformTarget>x64</PlatformTarget>
+              <Prefer32Bit>false</Prefer32Bit>
+              <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
+            </PropertyGroup>
+            <ItemGroup>
+              <Reference Include="System" />
+              <Reference Include="System.Core" />
+              <Reference Include="System.Drawing" />
+              <Reference Include="System.Windows.Forms" />
+            </ItemGroup>
+            <ItemGroup>
+              <PackageReference Include="Microsoft.Web.WebView2" Version="1.0.2849.39" />
+            </ItemGroup>
+            <ItemGroup>
+              <Compile Include="Program.cs" />
+            </ItemGroup>
+          </Project>
+          "@ | Set-Content -Path build\WeatherCard\WeatherCard.csproj -Encoding UTF8
+
+          @"
+          using System;
+          using System.Diagnostics;
+          using System.Drawing;
+          using System.Windows.Forms;
+          using Microsoft.Web.WebView2.WinForms;
+
+          namespace WeatherCard
+          {
+              internal static class Program
+              {
+                  [STAThread]
+                  private static void Main()
+                  {
+                      Application.EnableVisualStyles();
+                      Application.SetCompatibleTextRenderingDefault(false);
+                      Application.Run(new MainForm());
+                  }
+              }
+
+              public sealed class MainForm : Form
+              {
+                  private const string PageUrl = "$pageUrl";
+                  private readonly WebView2 webView = new WebView2();
+
+                  public MainForm()
+                  {
+                      Text = "天气卡片";
+                      StartPosition = FormStartPosition.CenterScreen;
+                      Size = new Size(460, 760);
+                      MinimumSize = new Size(380, 560);
+
+                      webView.Dock = DockStyle.Fill;
+                      Controls.Add(webView);
+
+                      Load += async delegate
+                      {
+                          try
+                          {
+                              await webView.EnsureCoreWebView2Async();
+                              webView.CoreWebView2.Settings.AreDevToolsEnabled = false;
+                              webView.CoreWebView2.Settings.AreDefaultContextMenusEnabled = false;
+                              webView.CoreWebView2.Navigate(PageUrl);
+                          }
+                          catch
+                          {
+                              MessageBox.Show(
+                                  "这个软件需要 Microsoft Edge WebView2 Runtime。请先安装它，或更新 Microsoft Edge。",
+                                  "天气卡片",
+                                  MessageBoxButtons.OK,
+                                  MessageBoxIcon.Information);
+                              Process.Start(new ProcessStartInfo
+                              {
+                                  FileName = "https://developer.microsoft.com/microsoft-edge/webview2/",
+                                  UseShellExecute = true
+                              });
+                              Close();
+                          }
+                      };
+                  }
+              }
+          }
+          "@ | Set-Content -Path build\WeatherCard\Program.cs -Encoding UTF8
+
+          msbuild build\WeatherCard\WeatherCard.csproj /restore /p:Configuration=Release /p:Platform=AnyCPU
+
+          Copy-Item build\WeatherCard\bin\Release\* dist\weather-card-windows -Recurse -Force
+
+          @"
+          天气卡片 Windows 软件版
 
           使用方法：
           1. 解压 weather-card-windows.zip。
           2. 双击 WeatherCard.exe。
-          3. 它会打开 GitHub Pages 上的天气卡片。
+          3. 天气卡片会在独立软件窗口中打开，不会显示浏览器地址栏。
 
           说明：
           - 这个软件需要联网使用。
           - 天气数据由 GitHub Actions 定时更新。
-          - 不需要安装 Node、Cloudflare、Electron 或其他开发工具。
-          EOF
-          cd dist
-          zip -r weather-card-windows.zip weather-card-windows
-          echo "VERSION=$VERSION" >> "$GITHUB_ENV"
+          - 如果打不开，请更新 Microsoft Edge，或安装 Microsoft Edge WebView2 Runtime。
+          "@ | Set-Content -Path dist\weather-card-windows\README.txt -Encoding UTF8
+
+          Compress-Archive -Path dist\weather-card-windows -DestinationPath dist\weather-card-windows.zip -Force
+          "VERSION=$version" | Out-File -FilePath $env:GITHUB_ENV -Append
 
       - name: 发布 Release
-        run: |
-          if gh release view "$VERSION" >/dev/null 2>&1; then
-            gh release upload "$VERSION" dist/weather-card-windows.zip --clobber
-          else
-            gh release create "$VERSION" dist/weather-card-windows.zip --title "天气卡片 Windows $VERSION" --notes "下载 weather-card-windows.zip，解压后双击 WeatherCard.exe。"
-          fi
+        shell: pwsh
         env:
           GH_TOKEN: ${{ github.token }}
+        run: |
+          $ErrorActionPreference = 'Stop'
+          $releaseExists = $false
+          try {
+            gh release view $env:VERSION *> $null
+            $releaseExists = ($LASTEXITCODE -eq 0)
+          } catch {
+            $releaseExists = $false
+          }
+
+          if ($releaseExists) {
+            gh release upload $env:VERSION dist\weather-card-windows.zip --clobber
+          } else {
+            gh release create $env:VERSION dist\weather-card-windows.zip --title "天气卡片 Windows $env:VERSION" --notes "下载 weather-card-windows.zip，解压后双击 WeatherCard.exe。"
+          }
