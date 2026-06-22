@@ -38,7 +38,8 @@
         }
 
         button,
-        .city-item {
+        .city-item,
+        input[type="range"] {
             cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='32' height='32' viewBox='0 0 32 32'%3E%3Cpath fill='%23f8fafc' stroke='%2338bdf8' stroke-width='1.5' d='M16 2l3.6 9.2L29 12.2l-7.1 6.3L24 28l-8-4.9L8 28l2.1-9.5L3 12.2l9.4-1L16 2z'/%3E%3C/svg%3E") 16 16, pointer;
         }
 
@@ -77,10 +78,10 @@
 
         .top {
             display: grid;
-            grid-template-columns: auto 1fr auto auto;
+            grid-template-columns: auto 1fr minmax(240px, 340px) auto auto;
             grid-template-areas:
-                "title space city refresh"
-                "stamp space city refresh";
+                "title space music city refresh"
+                "stamp space music city refresh";
             align-items: center;
             gap: 4px 10px;
             padding: 4px 2px 8px;
@@ -97,6 +98,78 @@
             grid-area: stamp;
             color: var(--muted);
             font-size: 12px;
+        }
+
+        .music-player {
+            grid-area: music;
+            justify-self: end;
+            width: min(340px, 34vw);
+            min-height: 34px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 5px 8px;
+            border-radius: 999px;
+            border: 1px solid #2a2a2a;
+            background: rgba(12, 12, 12, .9);
+            backdrop-filter: blur(12px);
+        }
+
+        .music-player.playing {
+            border-color: rgba(56, 189, 248, .65);
+            box-shadow: 0 0 24px rgba(56, 189, 248, .12);
+        }
+
+        .music-toggle {
+            width: 24px;
+            height: 24px;
+            border: 0;
+            border-radius: 999px;
+            background: rgba(56, 189, 248, .14);
+            color: var(--accent);
+            font-size: 11px;
+            font-weight: 800;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        .music-toggle:disabled {
+            opacity: .55;
+        }
+
+        .music-text {
+            min-width: 0;
+            flex: 1;
+            line-height: 1.1;
+        }
+
+        .music-title {
+            display: block;
+            color: var(--text);
+            font-size: 12px;
+            font-weight: 700;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .music-sub {
+            display: block;
+            margin-top: 2px;
+            color: var(--muted);
+            font-size: 10px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .volume {
+            width: 86px;
+            height: 4px;
+            accent-color: var(--accent);
+            flex-shrink: 0;
         }
 
         .city-select {
@@ -507,6 +580,20 @@
         }
 
         @media (max-width: 1100px) {
+            .top {
+                grid-template-columns: auto 1fr auto auto;
+                grid-template-areas:
+                    "title space city refresh"
+                    "stamp space city refresh"
+                    "music music music music";
+            }
+
+            .music-player {
+                justify-self: start;
+                width: min(420px, 100%);
+                margin-top: 6px;
+            }
+
             #content {
                 grid-template-columns: repeat(2, minmax(0, 1fr));
             }
@@ -547,11 +634,21 @@
                 grid-template-columns: 1fr auto auto;
                 grid-template-areas:
                     "title city refresh"
-                    "stamp stamp stamp";
+                    "stamp stamp stamp"
+                    "music music music";
             }
 
             .top h1 {
                 font-size: 21px;
+            }
+
+            .music-player {
+                width: 100%;
+                justify-self: stretch;
+            }
+
+            .volume {
+                width: 92px;
             }
 
             #content {
@@ -604,6 +701,17 @@
     <div class="wrap">
         <div class="top">
             <h1>天气卡片</h1>
+
+            <div class="music-player" id="musicPlayer">
+                <audio id="bgMusic" src="./assets/music.mp3" preload="metadata" loop></audio>
+                <button class="music-toggle" id="musicToggle" type="button" aria-label="播放音乐">▶</button>
+                <div class="music-text">
+                    <span class="music-title" id="musicTitle">Walking without U</span>
+                    <span class="music-sub" id="musicStatus">MODERN JUICE</span>
+                </div>
+                <input class="volume" id="volumeControl" type="range" min="0" max="1" step="0.01" value="0.35" aria-label="音量">
+            </div>
+
             <div class="city-select" id="citySelect">
                 <button class="city-trigger" id="cityTrigger">📍 上海 <span style="font-size:10px;">▾</span></button>
                 <div class="city-panel" id="cityPanel">
@@ -611,6 +719,7 @@
                     <div class="city-grid" id="cityGrid"></div>
                 </div>
             </div>
+
             <button class="refresh" id="refresh">🔄</button>
             <div class="stamp" id="stamp"></div>
         </div>
@@ -926,6 +1035,64 @@
                 draw();
             }
 
+            function setupMusic() {
+                var player = document.getElementById('musicPlayer');
+                var audio = document.getElementById('bgMusic');
+                var toggle = document.getElementById('musicToggle');
+                var volume = document.getElementById('volumeControl');
+                var title = document.getElementById('musicTitle');
+                var status = document.getElementById('musicStatus');
+
+                if (!player || !audio || !toggle || !volume) return;
+
+                var savedVolume = localStorage.getItem('weatherCardVolume');
+                audio.volume = savedVolume === null ? 0.35 : Math.max(0, Math.min(1, Number(savedVolume) || 0.35));
+                volume.value = audio.volume;
+
+                function setPlaying(isPlaying) {
+                    toggle.textContent = isPlaying ? 'Ⅱ' : '▶';
+                    player.classList.toggle('playing', isPlaying);
+                    status.textContent = isPlaying ? 'PLAYING' : 'MODERN JUICE';
+                }
+
+                toggle.addEventListener('click', async function() {
+                    if (audio.paused) {
+                        try {
+                            status.textContent = 'LOADING';
+                            await audio.play();
+                            setPlaying(true);
+                        } catch (e) {
+                            status.textContent = '点击后再试一次';
+                            setPlaying(false);
+                        }
+                    } else {
+                        audio.pause();
+                        setPlaying(false);
+                    }
+                });
+
+                volume.addEventListener('input', function() {
+                    audio.volume = Number(volume.value);
+                    localStorage.setItem('weatherCardVolume', String(audio.volume));
+                });
+
+                audio.addEventListener('play', function() {
+                    setPlaying(true);
+                });
+
+                audio.addEventListener('pause', function() {
+                    setPlaying(false);
+                });
+
+                audio.addEventListener('error', function() {
+                    toggle.textContent = '×';
+                    toggle.disabled = true;
+                    player.classList.remove('playing');
+                    title.textContent = '未找到 music.mp3';
+                    status.textContent = '请放到 assets 文件夹';
+                });
+            }
+
             var cityTrigger = document.getElementById('cityTrigger');
             var cityPanel = document.getElementById('cityPanel');
             var cityGrid = document.getElementById('cityGrid');
@@ -951,6 +1118,7 @@
 
             document.getElementById('refresh').addEventListener('click', refreshData);
 
+            setupMusic();
             startStarfield();
             renderCityMenu('01012601', '');
             refreshData();
