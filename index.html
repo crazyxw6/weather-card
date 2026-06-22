@@ -228,10 +228,10 @@
         .lyrics-dock {
             --lyric-progress: 0%;
             display: grid;
-            grid-template-columns: 132px minmax(0, 1fr) 70px;
+            grid-template-columns: 128px minmax(0, 1fr) 62px;
             align-items: center;
             gap: 12px;
-            min-height: 86px;
+            min-height: 92px;
             padding: 12px 14px;
             border: 1px solid var(--line);
             border-radius: var(--radius);
@@ -271,37 +271,30 @@
         }
 
         .lyric-near {
-            height: 16px;
-            color: var(--muted);
-            font-size: 11px;
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-            opacity: .64;
+            display: none;
         }
 
         .lyric-current {
-            padding: 4px 0;
+            padding: 0;
         }
 
         .lyric-kr-wrap {
             position: relative;
-            display: inline-block;
+            display: block;
             max-width: 100%;
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
+            white-space: normal;
+            overflow: visible;
             vertical-align: top;
         }
 
         .lyric-kr-base,
         .lyric-kr-fill {
             display: block;
-            font-size: 18px;
+            font-size: 17px;
             font-weight: 800;
             letter-spacing: 0;
-            line-height: 1.14;
-            white-space: nowrap;
+            line-height: 1.24;
+            white-space: normal;
         }
 
         .lyric-kr-base {
@@ -315,42 +308,16 @@
         }
 
         .lyric-cn {
-            margin-top: 4px;
+            margin-top: 5px;
             color: var(--sub);
             font-size: 12px;
-            white-space: nowrap;
+            line-height: 1.35;
+            white-space: normal;
             overflow: hidden;
-            text-overflow: ellipsis;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
         }
-        .lyrics-tools {
-            justify-self: end;
-            display: flex;
-            flex-direction: column;
-            align-items: flex-end;
-            gap: 6px;
-            min-width: 86px;
-        }
-
-        .lyric-shift {
-            display: flex;
-            gap: 4px;
-        }
-
-        .lyric-shift button {
-            min-width: 34px;
-            padding: 5px 7px;
-            border-radius: 999px;
-            background: var(--item-bg);
-            color: var(--muted);
-            font-size: 10px;
-            font-weight: 700;
-        }
-
-        .lyric-shift button:hover {
-            color: var(--accent);
-            border-color: rgba(56, 189, 248, .45);
-        }
-
         .lyrics-clock {
             justify-self: end;
             min-width: 58px;
@@ -885,10 +852,6 @@
                 grid-template-columns: repeat(2, minmax(0, 1fr));
             }
 
-            .lyrics-tools {
-                display: none;
-            }
-
             .idx-grid {
                 grid-template-columns: repeat(2, minmax(0, 1fr));
             }
@@ -1034,17 +997,15 @@
                 <em>走向离别</em>
             </div>
             <div class="lyrics-stage">
-                <div class="lyric-near" id="lyricPrev">准备播放歌词</div>
                 <div class="lyric-current">
                     <div class="lyric-kr-wrap">
                         <span class="lyric-kr-base" id="lyricCurrentKr">点击播放音乐</span>
                         <span class="lyric-kr-fill" id="lyricCurrentKrFill">点击播放音乐</span>
                     </div>
-                    <div class="lyric-cn" id="lyricCurrentCn">歌词会跟随音乐同步显示</div>
+                    <div class="lyric-cn" id="lyricCurrentCn">字幕时间轴同步显示</div>
                 </div>
-                <div class="lyric-near" id="lyricNext">按时间轴切换歌词</div>
             </div>
-            <div class="lyrics-tools"><div class="lyrics-clock" id="lyricClock">00:00</div><div class="lyric-shift"><button id="lyricEarlier" type="button">提前</button><button id="lyricLater" type="button">延后</button></div></div>
+            <div class="lyrics-clock" id="lyricClock">00:00</div>
         </div>
         <div id="content">
             <div class="loading">
@@ -1387,7 +1348,7 @@
             }
 
 
-            var LYRICS_LRC = "[ti:이별을 걷는다 (走向离别)]\n[ar:모던 쥬스 (Modern Juice)]\n[al:장미빛 연인들 OST (蔷薇色的恋人们 OST)]\n[by:weather-card]\n[00:15.00]가끔 생각이 날 때 / 偶尔想起你的时候\n[00:18.00]자꾸 보고 싶을 때 / 总是想见你的时候\n[00:22.00]너의 얼굴이 아른거릴 때 / 你的脸庞在眼前若隐若现的时候\n[00:29.00]고장 난 시계처럼 / 就像坏掉的时钟一样\n[00:32.00]멈춰버린 기억 속에서 / 在已经静止的记忆中\n[00:36.00]너를 찾아내곤 해 / 我总会去寻觅你的身影\n[00:43.00]너는 웃고 있지만 슬퍼 보여 / 即使你笑着，却看起来很悲伤\n[00:50.00]애써 참고 있지만 아파 보여 / 即使你努力忍耐，却看起来很痛苦\n[00:56.00]미처 내가 몰랐던 너의 사랑을 / 我曾经未曾察觉到的，你的爱\n[01:03.00]이제 하나하나씩 느껴 / 现在我一点一滴地感受到了\n[01:10.00]내 사랑이 조금 느려서 / 因为我的爱有些迟钝\n[01:16.00]이제야 너를 따라서 / 直到现在才跟随着你\n[01:23.00]한걸음 또 한걸음 이별을 걷는다 / 一步又一步地走向离别\n[01:31.00]그 오랜 시간이 걸려도 / 即使要花上漫长的时间\n[01:38.00]언제나 너의 뒤에서 / 我也会一直在你身后\n[01:44.00]돌아와 주길 기다려본다 / 等待着你能回来\n[01:50.00]이 곳에서 / 就在这里\n[02:04.00]가슴이 답답하고 / 当胸口感到发闷\n[02:08.00]마음이 또 먹먹해지면 / 当心里又变得沉甸甸时\n[02:12.00]니가 니가 그립다 / 我想念你，想念着你\n[02:18.00]오래된 필름처럼 따스하게 / 像老胶片一样温暖地\n[02:25.00]나를 사랑해주던 니 모습이 / 你曾经爱过我的模样\n[02:32.00]너무나도 선명해 손 내밀면 / 如此清晰，仿佛一伸手\n[02:38.00]손끝에 닿을 것만 같아 / 就能触碰到指尖\n[02:44.00]내 사랑이 너를 부른다 / 我的爱在呼唤你\n[02:51.00]이제야 너를 찾는다 / 直到现在才开始寻找你\n[02:58.00]한번만 꼭 한 번만 널 보고 싶다고 / 想见你一面，哪怕就只有一次\n[03:06.00]그 오랜 시간이 걸려도 / 即使要花上漫长的时间\n[03:12.00]언제나 너의 뒤에서 / 我也会一直在你身后\n[03:19.00]돌아와 주길 기다려본다 / 等待着你能回来\n[03:25.00]이 곳에서 / 就在这里\n[03:29.00]니가 아니면 / 如果不是你\n[03:32.00]그 누구도 빈자리를 채울 수 없어 / 谁也无法填补这空缺\n[03:38.00]그게 바로 너여야 해 / 那个人必须是你\n[03:41.00]너여야만 해 / 只能是你\n[03:45.00]내 사랑이 조금 느려서 / 因为我的爱有些迟钝\n[03:52.00]이제야 너를 따라서 / 直到现在才跟随着你\n[03:59.00]한걸음 또 한걸음 이별을 걷는다 / 一步又一步地走向离别";
+            var LYRICS_LRC = "[ti:이별을 걷는다 (走向离别)]\n[ar:모던 쥬스 (Modern Juice)]\n[al:장미빛 연인들 OST (蔷薇色的恋人们 OST)]\n[by:YouTube SRT TpzWg2igD9w]\n[00:14.44]가끔 생각이 날 때 자꾸 보고 싶을 때 너의 얼굴이 아른거릴 때 고장 난 시계처럼 / 偶尔想起你的时候，总是想见你的时候，你的脸庞浮现，就像坏掉的时钟一样\n[00:30.84]멈춰버린 기억 속에서 너를 찾아내곤 해 너는 웃고 있지만 슬퍼 보여 애써 참고 / 在静止的记忆里，我总会找到你；你笑着却看起来悲伤，努力忍耐着\n[00:49.08]있지만 아파 보여 미처 내가 몰랐던 너의 사랑을 이제 하나씩 느껴 내 사랑이 / 但你看起来很痛；我曾未察觉的你的爱，现在一点点感受到了，我的爱\n[01:07.96]조금 느려서 이제야 너를 따라서 한걸음 또 한걸음 이별을 걷는다 그 오랜 / 因为有些迟钝，直到现在才跟随着你，一步又一步走向离别，那漫长的\n[01:20.88]시간이 걸려도 언제나 너의 뒤에서 돌아와 주길 기다려본다 / 即使要花上很久很久，我也会一直在你身后，等待你回来\n[01:45.52]이곳에서 가슴이 답답하고 마음이 또 먹먹해지면 네가 네가 그립다 오래된 / 就在这里，当胸口发闷、心里又变得沉甸甸时，我想念你，想念着你，像老旧的\n[02:00.84]필름처럼 / 胶片一样\n[02:05.24]따스하게 나를 사랑해주던 네 모습이 너무나도 선명해 손 내밀면 손끝에 / 曾温暖地爱着我的你的模样，是那样清晰，仿佛一伸手就能在指尖\n[02:20.64]닿을 것만 같아 내 사랑이 너를 부른다 이제야 너를 찾는다 한번만 꼭 한번만 / 触碰到；我的爱在呼唤你，直到现在才寻找你，哪怕一次，就一次\n[02:36.36]널 보고 싶다고 그 오랜 시간이 걸려도 언제나 너의 뒤에서 돌아와 주길 / 我想见你；即使要花上漫长的时间，我也会一直在你身后，盼你回来\n[02:50.60]기다려본다 이곳에서 네가 아니면 그 누구도 빈자리를 채울 수 없어 그대로 / 我会在这里等待；如果不是你，谁也无法填补这个空位，就这样\n[03:05.04]너여야 해 너여야 / 必须是你，必须是你\n[03:10.76]만 해 내 사랑이 조금 느려서 이제야 너를 따라서 한걸음 또 한걸음 이별을 / 只能是你；因为我的爱有些迟钝，直到现在才跟随着你，一步又一步走向离别\n[03:23.52]걷는다 그 오랜 시간이 걸려도 언제나 너의 뒤에서 돌아와 주길 기다려본다 / 即使要花上漫长的时间，我也会一直在你身后，等待你回来\n[03:38.68]이곳에서 / 就在这里\n[03:43.20]이곳에서 이곳에서 / 就在这里，就在这里\n[03:49.88]이곳에서 이곳에서 / 就在这里，就在这里";
 
             function parseLyrics(lrc) {
                 return lrc.split(/\r?\n/).map(function(line) {
@@ -1416,32 +1377,21 @@
             }
 
             function setupLyrics(audio) {
-                var prev = document.getElementById('lyricPrev');
                 var currentKr = document.getElementById('lyricCurrentKr');
                 var currentKrFill = document.getElementById('lyricCurrentKrFill');
                 var currentCn = document.getElementById('lyricCurrentCn');
-                var next = document.getElementById('lyricNext');
                 var clock = document.getElementById('lyricClock');
-                var earlier = document.getElementById('lyricEarlier');
-                var later = document.getElementById('lyricLater');
                 var lines = parseLyrics(LYRICS_LRC);
                 var activeIndex = -1;
                 var rafId = 0;
-                var savedOffset = Number(localStorage.getItem('weatherCardLyricOffsetV4'));
-                var lyricOffset = Number.isNaN(savedOffset) ? 0 : savedOffset;
 
                 if (!audio || !lines.length) return;
 
                 function setLine(index) {
                     var line = lines[index] || lines[0];
-                    var before = lines[index - 1];
-                    var after = lines[index + 1];
-
-                    prev.textContent = before ? before.kr + (before.cn ? ' / ' + before.cn : '') : '等待播放';
                     currentKr.textContent = line.kr || '♪';
                     currentKrFill.textContent = '';
                     currentCn.textContent = line.cn || 'MODERN JUICE';
-                    next.textContent = after ? after.kr + (after.cn ? ' / ' + after.cn : '') : '歌词结束';
                 }
 
                 function findLineIndex(time) {
@@ -1454,7 +1404,7 @@
                 }
 
                 function updateLyrics() {
-                    var time = Math.max(0, (audio.currentTime || 0) + lyricOffset);
+                    var time = audio.currentTime || 0;
                     var index = findLineIndex(time);
 
                     if (index !== activeIndex) {
@@ -1462,32 +1412,12 @@
                         setLine(index);
                     }
 
-                    if (clock) clock.textContent = formatLyricTime(audio.currentTime || 0);
+                    if (clock) clock.textContent = formatLyricTime(time);
                 }
 
                 function loop() {
                     updateLyrics();
                     rafId = requestAnimationFrame(loop);
-                }
-
-                function saveOffset() {
-                    localStorage.setItem('weatherCardLyricOffsetV4', String(lyricOffset));
-                    activeIndex = -1;
-                    updateLyrics();
-                }
-
-                if (earlier) {
-                    earlier.addEventListener('click', function() {
-                        lyricOffset = Math.min(20, lyricOffset + 0.5);
-                        saveOffset();
-                    });
-                }
-
-                if (later) {
-                    later.addEventListener('click', function() {
-                        lyricOffset = Math.max(-20, lyricOffset - 0.5);
-                        saveOffset();
-                    });
                 }
 
                 setLine(0);
