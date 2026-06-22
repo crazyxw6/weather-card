@@ -1,4 +1,5 @@
 # Weather Card
+![Weather Card Logo](assets/logo.png)
 
 Weather Card is a small weather app that runs entirely on GitHub.
 
