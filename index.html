@@ -703,13 +703,13 @@
             <h1>天气卡片</h1>
 
             <div class="music-player" id="musicPlayer">
-                <audio id="bgMusic" src="./assets/music.mp3" preload="metadata" loop></audio>
+                <audio id="bgMusic" src="./assets/music.mp3" preload="auto" loop autoplay playsinline></audio>
                 <button class="music-toggle" id="musicToggle" type="button" aria-label="播放音乐">▶</button>
                 <div class="music-text">
                     <span class="music-title" id="musicTitle">Walking without U</span>
-                    <span class="music-sub" id="musicStatus">MODERN JUICE</span>
+                    <span class="music-sub" id="musicStatus">自动播放准备中</span>
                 </div>
-                <input class="volume" id="volumeControl" type="range" min="0" max="1" step="0.01" value="0.35" aria-label="音量">
+                <input class="volume" id="volumeControl" type="range" min="0" max="1" step="0.01" value="0.18" aria-label="音量">
             </div>
 
             <div class="city-select" id="citySelect">
@@ -1045,14 +1045,32 @@
 
                 if (!player || !audio || !toggle || !volume) return;
 
-                var savedVolume = localStorage.getItem('weatherCardVolume');
-                audio.volume = savedVolume === null ? 0.35 : Math.max(0, Math.min(1, Number(savedVolume) || 0.35));
+                var defaultVolume = 0.18;
+                var savedVolume = localStorage.getItem('weatherCardVolumeV2');
+                var savedNumber = Number(savedVolume);
+
+                audio.volume = savedVolume === null || Number.isNaN(savedNumber)
+                    ? defaultVolume
+                    : Math.max(0, Math.min(1, savedNumber));
                 volume.value = audio.volume;
+                audio.autoplay = true;
 
                 function setPlaying(isPlaying) {
                     toggle.textContent = isPlaying ? 'Ⅱ' : '▶';
                     player.classList.toggle('playing', isPlaying);
-                    status.textContent = isPlaying ? 'PLAYING' : 'MODERN JUICE';
+                    status.textContent = isPlaying ? 'PLAYING' : '点击播放';
+                }
+
+                function tryAutoPlay() {
+                    if (audio.dataset.triedAutoPlay === '1') return;
+                    audio.dataset.triedAutoPlay = '1';
+                    status.textContent = 'AUTO PLAY';
+
+                    audio.play().then(function() {
+                        setPlaying(true);
+                    }).catch(function() {
+                        setPlaying(false);
+                    });
                 }
 
                 toggle.addEventListener('click', async function() {
@@ -1073,8 +1091,10 @@
 
                 volume.addEventListener('input', function() {
                     audio.volume = Number(volume.value);
-                    localStorage.setItem('weatherCardVolume', String(audio.volume));
+                    localStorage.setItem('weatherCardVolumeV2', String(audio.volume));
                 });
+
+                audio.addEventListener('canplay', tryAutoPlay, { once: true });
 
                 audio.addEventListener('play', function() {
                     setPlaying(true);
@@ -1090,6 +1110,10 @@
                     player.classList.remove('playing');
                     title.textContent = '未找到 music.mp3';
                     status.textContent = '请放到 assets 文件夹';
+                });
+
+                window.addEventListener('load', function() {
+                    setTimeout(tryAutoPlay, 400);
                 });
             }
 
