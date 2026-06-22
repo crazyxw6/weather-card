@@ -37,6 +37,7 @@ jobs:
           }
 
           New-Item -ItemType Directory -Force -Path build\WeatherCard, dist\weather-card-windows | Out-Null
+          Copy-Item assets\app.ico build\WeatherCard\app.ico -Force
           $outDir = (Resolve-Path dist\weather-card-windows).Path + '\'
 
           @"
@@ -50,6 +51,7 @@ jobs:
               <RootNamespace>WeatherCard</RootNamespace>
               <AssemblyName>WeatherCard</AssemblyName>
               <UseWindowsForms>true</UseWindowsForms>
+              <ApplicationIcon>app.ico</ApplicationIcon>
               <PlatformTarget>x64</PlatformTarget>
               <Prefer32Bit>false</Prefer32Bit>
               <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
