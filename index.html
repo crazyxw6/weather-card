@@ -305,18 +305,13 @@
         }
 
         .lyric-kr-base {
-            color: var(--text);
-            opacity: .34;
+            color: var(--accent);
+            opacity: 1;
+            text-shadow: 0 0 22px rgba(56, 189, 248, .22);
         }
 
         .lyric-kr-fill {
-            position: absolute;
-            inset: 0 auto auto 0;
-            width: var(--lyric-progress);
-            max-width: 100%;
-            color: var(--accent);
-            overflow: hidden;
-            text-shadow: 0 0 22px rgba(56, 189, 248, .25);
+            display: none;
         }
 
         .lyric-cn {
@@ -1370,7 +1365,6 @@
             }
 
             function setupLyrics(audio) {
-                var dock = document.getElementById('lyricsDock');
                 var prev = document.getElementById('lyricPrev');
                 var currentKr = document.getElementById('lyricCurrentKr');
                 var currentKrFill = document.getElementById('lyricCurrentKrFill');
@@ -1380,16 +1374,16 @@
                 var lines = parseLyrics(LYRICS_LRC);
                 var activeIndex = -1;
 
-                if (!dock || !audio || !lines.length) return;
+                if (!audio || !lines.length) return;
 
                 function setLine(index) {
                     var line = lines[index] || lines[0];
                     var before = lines[index - 1];
                     var after = lines[index + 1];
 
-                    prev.textContent = before ? before.kr + (before.cn ? ' / ' + before.cn : '') : 'Walking without U';
+                    prev.textContent = before ? before.kr + (before.cn ? ' / ' + before.cn : '') : '等待播放';
                     currentKr.textContent = line.kr || '♪';
-                    currentKrFill.textContent = line.kr || '♪';
+                    currentKrFill.textContent = '';
                     currentCn.textContent = line.cn || 'MODERN JUICE';
                     next.textContent = after ? after.kr + (after.cn ? ' / ' + after.cn : '') : '歌词结束';
                 }
@@ -1403,28 +1397,24 @@
                     return index;
                 }
 
-                function tick() {
+                function updateLyrics() {
                     var time = audio.currentTime || 0;
                     var index = findLineIndex(time);
-                    var line = lines[index];
-                    var nextLine = lines[index + 1];
-                    var duration = nextLine ? Math.max(.1, nextLine.time - line.time) : 4;
-                    var progress = Math.max(0, Math.min(1, (time - line.time) / duration));
 
                     if (index !== activeIndex) {
                         activeIndex = index;
                         setLine(index);
                     }
 
-                    dock.style.setProperty('--lyric-progress', (progress * 100).toFixed(2) + '%');
                     if (clock) clock.textContent = formatLyricTime(time);
-                    requestAnimationFrame(tick);
                 }
 
                 setLine(0);
-                tick();
-            }
-            function setupMusic() {
+                updateLyrics();
+                audio.addEventListener('timeupdate', updateLyrics);
+                audio.addEventListener('seeked', updateLyrics);
+                audio.addEventListener('play', updateLyrics);
+            }            function setupMusic() {
                 var player = document.getElementById('musicPlayer');
                 var audio = document.getElementById('bgMusic');
                 var toggle = document.getElementById('musicToggle');
@@ -1555,6 +1545,7 @@
     </script>
 </body>
 </html>
+
 
 
 
