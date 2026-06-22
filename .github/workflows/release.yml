@@ -4,9 +4,9 @@ on:
   workflow_dispatch:
     inputs:
       version:
-        description: '版本号，例如 v1.0.2'
+        description: '版本号，例如 v1.0.3'
         required: true
-        default: 'v1.0.2'
+        default: 'v1.0.3'
 
 permissions:
   contents: write
@@ -37,16 +37,15 @@ jobs:
           }
 
           New-Item -ItemType Directory -Force -Path build\WeatherCard, dist\weather-card-windows | Out-Null
+          $outDir = (Resolve-Path dist\weather-card-windows).Path + '\'
 
           @"
           <Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-            <Import Project="`$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
             <PropertyGroup>
               <Configuration Condition=" '`$(Configuration)' == '' ">Release</Configuration>
               <Platform Condition=" '`$(Platform)' == '' ">AnyCPU</Platform>
               <OutputType>WinExe</OutputType>
               <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
-              <OutputPath>bin\Release\</OutputPath>
               <RootNamespace>WeatherCard</RootNamespace>
               <AssemblyName>WeatherCard</AssemblyName>
               <UseWindowsForms>true</UseWindowsForms>
@@ -66,6 +65,7 @@ jobs:
             <ItemGroup>
               <Compile Include="Program.cs" />
             </ItemGroup>
+            <Import Project="`$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
           </Project>
           "@ | Set-Content -Path build\WeatherCard\WeatherCard.csproj -Encoding UTF8
 
@@ -133,9 +133,7 @@ jobs:
           }
           "@ | Set-Content -Path build\WeatherCard\Program.cs -Encoding UTF8
 
-          msbuild build\WeatherCard\WeatherCard.csproj /restore /p:Configuration=Release /p:Platform=AnyCPU
-
-          Copy-Item build\WeatherCard\bin\Release\* dist\weather-card-windows -Recurse -Force
+          msbuild build\WeatherCard\WeatherCard.csproj /restore /p:Configuration=Release /p:Platform=AnyCPU /p:OutDir="$outDir"
 
           @"
           天气卡片 Windows 软件版
