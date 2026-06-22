@@ -228,11 +228,11 @@
         .lyrics-dock {
             --lyric-progress: 0%;
             display: grid;
-            grid-template-columns: 180px minmax(0, 1fr) 86px;
+            grid-template-columns: 132px minmax(0, 1fr) 70px;
             align-items: center;
-            gap: 18px;
-            min-height: 126px;
-            padding: 18px 20px;
+            gap: 12px;
+            min-height: 86px;
+            padding: 12px 14px;
             border: 1px solid var(--line);
             border-radius: var(--radius);
             background: var(--card-bg);
@@ -244,24 +244,24 @@
         .lyrics-label span {
             display: block;
             color: var(--muted);
-            font-size: 11px;
+            font-size: 10px;
             font-weight: 700;
             letter-spacing: .08em;
         }
 
         .lyrics-label strong {
             display: block;
-            margin-top: 6px;
+            margin-top: 4px;
             color: var(--text);
-            font-size: 15px;
-            line-height: 1.25;
+            font-size: 13px;
+            line-height: 1.2;
         }
 
         .lyrics-label em {
             display: block;
-            margin-top: 3px;
+            margin-top: 2px;
             color: var(--muted);
-            font-size: 12px;
+            font-size: 11px;
             font-style: normal;
         }
 
@@ -271,17 +271,17 @@
         }
 
         .lyric-near {
-            height: 20px;
+            height: 16px;
             color: var(--muted);
-            font-size: 12px;
+            font-size: 11px;
             white-space: nowrap;
             overflow: hidden;
             text-overflow: ellipsis;
-            opacity: .72;
+            opacity: .64;
         }
 
         .lyric-current {
-            padding: 7px 0;
+            padding: 4px 0;
         }
 
         .lyric-kr-wrap {
@@ -297,10 +297,10 @@
         .lyric-kr-base,
         .lyric-kr-fill {
             display: block;
-            font-size: 25px;
+            font-size: 18px;
             font-weight: 800;
             letter-spacing: 0;
-            line-height: 1.18;
+            line-height: 1.14;
             white-space: nowrap;
         }
 
@@ -320,9 +320,9 @@
         }
 
         .lyric-cn {
-            margin-top: 7px;
+            margin-top: 4px;
             color: var(--sub);
-            font-size: 15px;
+            font-size: 12px;
             white-space: nowrap;
             overflow: hidden;
             text-overflow: ellipsis;
@@ -330,12 +330,12 @@
 
         .lyrics-clock {
             justify-self: end;
-            min-width: 72px;
-            padding: 8px 10px;
+            min-width: 58px;
+            padding: 6px 8px;
             border-radius: 999px;
             background: var(--item-bg);
             color: var(--muted);
-            font-size: 12px;
+            font-size: 11px;
             font-variant-numeric: tabular-nums;
             text-align: center;
         }
@@ -519,9 +519,27 @@
             line-height: 1;
             flex-shrink: 0;
         }
-
         .now-copy {
             min-width: 0;
+        }
+
+        .now-headline {
+            display: flex;
+            align-items: flex-end;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .now-city {
+            margin-bottom: 7px;
+            padding: 5px 10px;
+            border-radius: 999px;
+            background: var(--item-bg);
+            color: var(--sub);
+            font-size: 13px;
+            font-weight: 700;
+            line-height: 1;
+            white-space: nowrap;
         }
 
         .now-temp {
@@ -809,7 +827,7 @@
             }
 
             .lyrics-dock {
-                grid-template-columns: 150px minmax(0, 1fr);
+                grid-template-columns: 120px minmax(0, 1fr);
             }
 
             .lyrics-clock {
@@ -868,8 +886,8 @@
             .lyrics-dock {
                 grid-template-columns: 1fr;
                 min-height: 0;
-                padding: 16px;
-                gap: 12px;
+                padding: 12px;
+                gap: 8px;
             }
 
             .lyrics-label {
@@ -878,11 +896,11 @@
 
             .lyric-kr-base,
             .lyric-kr-fill {
-                font-size: 21px;
+                font-size: 17px;
             }
 
             .lyric-cn {
-                font-size: 14px;
+                font-size: 12px;
             }
 
             #content {
@@ -1002,6 +1020,7 @@
             var cities = fallbackCities;
             var curCode = '01012601';
             var curCodeType = '';
+            var curName = '上海';
 
             var ICON = {
                 1: '☀️',
@@ -1076,7 +1095,7 @@
                 h += '<div class="card now-card">';
                 h += '<div class="now-main">';
                 h += '<div class="now-icon">' + ico(c.weatherid) + '</div>';
-                h += '<div class="now-copy"><div class="now-temp">' + (c.temperature ?? '--') + '<u>℃</u></div>';
+                h += '<div class="now-copy"><div class="now-headline"><div class="now-temp">' + (c.temperature ?? '--') + '<u>℃</u></div><div class="now-city">' + curName + '</div></div>';
                 h += '<div class="now-desc">' + (c.weathertext || '') + ' · 体感 ' + (c.realfeel ?? '--') + '℃</div></div>';
                 h += '</div>';
                 h += '<div class="now-meta"><span>湿度 <b>' + (c.humidity ?? '--') + '%</b></span><span>风力 <b>' + (c.winddirtext || c.winddir || '') + ' ' + (c.windlevel || '') + '级</b></span><span>能见度 <b>' + (c.visibility ?? '--') + 'km</b></span><span>气压 <b>' + (c.pressure ?? '--') + 'hPa</b></span></div>';
@@ -1186,6 +1205,7 @@
                     var d = getWeather(code, codeType);
                     curCode = code;
                     curCodeType = codeType || '';
+                    curName = name || curName;
                     render(d);
 
                     if (name) {
@@ -1321,7 +1341,7 @@
             }
 
 
-            var LYRICS_LRC = "[ti:이별을 걷는다 (走向离别)]\r\n[ar:모던 쥬스 (Modern Juice)]\r\n[al:장미빛 연인들 OST (蔷薇色的恋人们 OST)]\r\n[by:YourName]\r\n[00:00.00]이별을 걷는다 - 모던 쥬스\r\n[00:15.00]가끔 생각이 날 때, / 偶尔想起你的时候\r\n[00:18.00]자꾸 보고 싶을 때, / 总是想见你的时候\r\n[00:22.00]너의 얼굴이 아른거릴 때, / 你的脸庞在眼前若隐若现的时候\r\n[00:29.00]고장 난 시계처럼, / 就像坏掉的时钟一样\r\n[00:32.00]멈춰버린 기억 속에서, / 在已经静止的记忆中\r\n[00:36.00]너를 찾아내곤 해, / 我总会去寻觅你的身影\r\n[00:43.00]너는 웃고 있지만 슬퍼 보여, / 即使你笑着，却看起来很悲伤\r\n[00:50.00]애써 참고 있지만 아파 보여, / 即使你努力忍耐，却看起来很痛苦\r\n[00:56.00]미처 내가 몰랐던 너의 사랑을, / 我曾经未曾察觉到的，你的爱\r\n[01:03.00]이제 하나하나씩 느껴, / 现在我一点一滴地感受到了\r\n[01:10.00]내 사랑이 조금 느려서, / 因为我的爱有些迟钝\r\n[01:16.00]이제야 너를 따라서, / 直到现在才跟随着你\r\n[01:23.00]한걸음 또 한걸음 이별을 걷는다, / 一步又一步地走向离别\r\n[01:31.00]그 오랜 시간이 걸려도, / 即使要花上漫长的时间\r\n[01:38.00]언제나 너의 뒤에서, / 我也会一直在你身后\r\n[01:44.00]돌아와 주길 기다려본다, / 等待着你能回来\r\n[01:50.00]이 곳에서, / 就在这里\r\n[02:04.00]가슴이 답답하고, / 当胸口感到发闷\r\n[02:08.00]마음이 또 먹먹해지면, / 当心里又变得沉甸甸时\r\n[02:12.00]니가 니가 그립다, / 我想念你，想念着你\r\n[02:18.00]오래된 필름처럼 따스하게, / 像老胶片一样温暖地\r\n[02:25.00]나를 사랑해주던 니 모습이, / 你曾经爱过我的模样\r\n[02:32.00]너무나도 선명해 손 내밀면, / 如此清晰，仿佛一伸手\r\n[02:38.00]손 끝에 닿을 것만 같아, / 就能触碰到指尖\r\n[02:44.00]내 사랑이 너를 부른다, / 我的爱在呼唤你\r\n[02:51.00]이제야 너를 찾는다, / 直到现在才开始寻找你\r\n[02:58.00]한번만 꼭 한 번만 널 보고 싶다고, / 想见你一面，哪怕就只有一次\r\n[03:06.00]그 오랜 시간이 걸려도, / 即使要花上漫长的时间\r\n[03:12.00]언제나 너의 뒤에서, / 我也会一直在你身后\r\n[03:19.00]돌아와 주길 기다려본다, / 等待着你能回来\r\n[03:25.00]이 곳에서, / 就在这里\r\n[03:29.00]니가 아니면, / 如果不是你\r\n[03:32.00]그 누구도 빈자리를 채울 수 없어, / 谁也无法填补这空缺\r\n[03:38.00]그게 바로 너여야 해, / 那个人必须是你\r\n[03:41.00]너여야만 해, / 只能是你\r\n[03:45.00]내 사랑이 조금 느려서, / 因为我的爱有些迟钝\r\n[03:52.00]이제야 너를 따라서, / 直到现在才跟随着你\r\n[03:59.00]한걸음 또 한걸음 이별을 걷는다, / 一步又一步地走向离别\r\n[04:06.00]그 오랜 시간이 걸려도, / 即使要花上漫长的时间\r\n[04:13.00]언제나 너의 뒤에서, / 我也会一直在你身后\r\n[04:20.00]돌아와 주길 기다려본다, / 等待着你能回来\r\n[04:26.00]이 곳에서, / 就在这里\r\n[04:30.00]이 곳에서, / 就在这里\r\n[04:35.00]이 곳에서, / 就在这里";
+            var LYRICS_LRC = "[ti:이별을 걷는다 (走向离别)]\r\n[ar:모던 쥬스 (Modern Juice)]\r\n[al:장미빛 연인들 OST (蔷薇色的恋人们 OST)]\r\n[by:weather-card]\r\n[00:00.00]가끔 / 偶尔\r\n[00:09.00]생각이 날 때 자꾸 보고 싶을 때 / 想起你的时候，总是想见你的时候\r\n[00:19.00]너의 얼굴이 아른거릴 때 / 你的脸庞在眼前若隐若现的时候\r\n[00:28.00]고장난 시계처럼 멈춰버린 기억 속에서 / 就像坏掉的时钟，在静止的记忆中\r\n[00:38.00]너를 찾아내곤 해 / 我总会去寻觅你的身影\r\n[00:45.00]너는 웃고 있지만 슬퍼 보여 / 即使你笑着，却看起来很悲伤\r\n[00:52.00]애써 참고 있지만 아파 보여 / 即使你努力忍耐，却看起来很痛苦\r\n[01:00.00]미처 내가 몰랐던 너의 사랑을 / 我曾经未曾察觉到的，你的爱\r\n[01:10.00]이제 하나하나씩 느껴 / 现在我一点一滴地感受到了\r\n[01:20.00]내 사랑이 조금 느려서 / 因为我的爱有些迟钝\r\n[01:30.00]이제야 너를 따라서 / 直到现在才跟随着你\r\n[01:40.00]한걸음 또 한걸음 이별을 걷는다 / 一步又一步地走向离别\r\n[01:55.00]그 오랜 시간이 걸려도 / 即使要花上漫长的时间\r\n[02:05.00]언제나 너의 뒤에서 돌아와 주길 기다려본다 / 我也会一直在你身后，等待着你能回来\r\n[02:15.00]이 곳에서 / 就在这里\r\n[02:31.00]가슴이 답답하고 마음이 또 먹먹해지면 / 当胸口发闷，心里又变得沉甸甸时\r\n[02:45.00]니가 니가 그립다 / 我想念你，想念着你\r\n[02:55.00]오래된 필름처럼 따스하게 / 像老胶片一样温暖地\r\n[03:05.00]나를 사랑해주던 니 모습이 / 你曾经爱过我的模样\r\n[03:15.00]너무나도 선명해 손 내밀면 / 如此清晰，仿佛一伸手\r\n[03:25.00]손끝에 닿을 것만 같아 / 就能触碰到指尖\r\n[03:35.00]내 사랑이 너를 부른다 / 我的爱在呼唤你\r\n[03:40.00]이제야 너를 찾는다 / 直到现在才开始寻找你\r\n[03:50.00]한번만 꼭 한 번만 널 보고 싶다고 / 想见你一面，哪怕就只有一次\r\n[04:00.00]그 오랜 시간이 걸려도 / 即使要花上漫长的时间\r\n[04:01.00]언제나 너의 뒤에서 돌아와 주길 기다려본다 / 我也会一直在你身后，等待着你能回来";
 
             function parseLyrics(lrc) {
                 return lrc.split(/\r?\n/).map(function(line) {
@@ -1535,5 +1555,6 @@
     </script>
 </body>
 </html>
+
 
 
