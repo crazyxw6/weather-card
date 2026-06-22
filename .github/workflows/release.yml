@@ -4,9 +4,9 @@ on:
   workflow_dispatch:
     inputs:
       version:
-        description: '版本号，例如 v1.0.0'
+        description: '版本号，例如 v1.0.1'
         required: true
-        default: 'v1.0.0'
+        default: 'v1.0.1'
 
 permissions:
   contents: write
@@ -18,7 +18,12 @@ jobs:
       - name: 取出仓库文件
         uses: actions/checkout@v4
 
-      - name: 打包 Windows zip
+      - name: 准备 Go
+        uses: actions/setup-go@v5
+        with:
+          go-version: '1.22'
+
+      - name: 生成 Windows exe
         run: |
           set -e
           VERSION="${{ github.event.inputs.version }}"
@@ -30,14 +35,43 @@ jobs:
             PAGE_URL="https://${OWNER}.github.io/${REPO}/"
           fi
 
-          mkdir -p dist/weather-card-windows
-          printf '@echo off\r\nstart "" "%s"\r\n' "$PAGE_URL" > dist/weather-card-windows/start-weather-card.bat
-          cp windows/README.txt dist/weather-card-windows/README.txt
+          mkdir -p dist/weather-card-windows build
+          cat > build/main.go <<EOF
+          package main
+
+          import (
+            "os/exec"
+          )
+
+          func main() {
+            exec.Command("rundll32", "url.dll,FileProtocolHandler", "$PAGE_URL").Start()
+          }
+          EOF
+
+          GOOS=windows GOARCH=amd64 go build -ldflags="-H windowsgui -s -w" -o dist/weather-card-windows/WeatherCard.exe build/main.go
+          cat > dist/weather-card-windows/README.txt <<EOF
+          天气卡片 Windows 版
+
+          使用方法：
+          1. 解压 weather-card-windows.zip。
+          2. 双击 WeatherCard.exe。
+          3. 它会打开 GitHub Pages 上的天气卡片。
+
+          说明：
+          - 这个软件需要联网使用。
+          - 天气数据由 GitHub Actions 定时更新。
+          - 不需要安装 Node、Cloudflare、Electron 或其他开发工具。
+          EOF
           cd dist
           zip -r weather-card-windows.zip weather-card-windows
           echo "VERSION=$VERSION" >> "$GITHUB_ENV"
 
       - name: 发布 Release
-        run: gh release create "$VERSION" dist/weather-card-windows.zip --title "天气卡片 Windows $VERSION" --notes "下载 weather-card-windows.zip，解压后双击 start-weather-card.bat。"
+        run: |
+          if gh release view "$VERSION" >/dev/null 2>&1; then
+            gh release upload "$VERSION" dist/weather-card-windows.zip --clobber
+          else
+            gh release create "$VERSION" dist/weather-card-windows.zip --title "天气卡片 Windows $VERSION" --notes "下载 weather-card-windows.zip，解压后双击 WeatherCard.exe。"
+          fi
         env:
           GH_TOKEN: ${{ github.token }}
