@@ -322,6 +322,34 @@
             overflow: hidden;
             text-overflow: ellipsis;
         }
+        .lyrics-tools {
+            justify-self: end;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+            gap: 6px;
+            min-width: 86px;
+        }
+
+        .lyric-shift {
+            display: flex;
+            gap: 4px;
+        }
+
+        .lyric-shift button {
+            min-width: 34px;
+            padding: 5px 7px;
+            border-radius: 999px;
+            background: var(--item-bg);
+            color: var(--muted);
+            font-size: 10px;
+            font-weight: 700;
+        }
+
+        .lyric-shift button:hover {
+            color: var(--accent);
+            border-color: rgba(56, 189, 248, .45);
+        }
 
         .lyrics-clock {
             justify-self: end;
@@ -446,13 +474,14 @@
         #content {
             flex: 1;
             display: grid;
-            grid-template-columns: minmax(320px, .95fr) minmax(0, 1fr) minmax(0, 1fr);
+            grid-template-columns: minmax(300px, .82fr) minmax(0, 1.12fr) minmax(0, 1.12fr);
             grid-template-areas:
-                "now air sun"
-                "index hourly hourly"
+                "now hourly hourly"
+                "air daily daily"
+                "sun daily daily"
                 "index daily daily";
-            gap: 14px;
-            align-items: start;
+            gap: 12px;
+            align-items: stretch;
         }
 
         .card {
@@ -468,7 +497,7 @@
 
         .now-card {
             grid-area: now;
-            min-height: 282px;
+            min-height: 214px;
             display: flex;
             flex-direction: column;
             justify-content: space-between;
@@ -476,24 +505,33 @@
 
         .air-card {
             grid-area: air;
-            min-height: 112px;
+            min-height: 86px;
         }
 
         .sun-card {
             grid-area: sun;
-            min-height: 112px;
+            min-height: 86px;
         }
 
         .hourly-card {
             grid-area: hourly;
+            min-height: 214px;
         }
 
         .daily-card {
             grid-area: daily;
+            overflow: hidden;
+        }
+
+        .daily-list {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            column-gap: 18px;
         }
 
         .index-card {
             grid-area: index;
+            align-self: start;
         }
 
         .now-main {
@@ -503,14 +541,14 @@
         }
 
         .now-icon {
-            width: 92px;
-            height: 92px;
+            width: 82px;
+            height: 82px;
             display: flex;
             align-items: center;
             justify-content: center;
             border-radius: var(--radius);
             background: var(--icon-bg);
-            font-size: 58px;
+            font-size: 52px;
             line-height: 1;
             flex-shrink: 0;
         }
@@ -538,7 +576,7 @@
         }
 
         .now-temp {
-            font-size: 76px;
+            font-size: 68px;
             font-weight: 700;
             letter-spacing: 0;
             line-height: .92;
@@ -561,7 +599,7 @@
             display: grid;
             grid-template-columns: repeat(2, minmax(0, 1fr));
             gap: 8px;
-            margin-top: 20px;
+            margin-top: 14px;
             font-size: 12px;
             color: var(--muted);
         }
@@ -589,7 +627,7 @@
             align-items: center;
             justify-content: space-between;
             gap: 12px;
-            margin-bottom: 14px;
+            margin-bottom: 10px;
         }
 
         .sec {
@@ -626,7 +664,7 @@
         }
 
         .sun-row {
-            min-height: 48px;
+            min-height: 40px;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -648,11 +686,11 @@
         }
 
         .hr {
-            flex: 0 0 86px;
+            flex: 0 0 78px;
             text-align: center;
             font-size: 12px;
             color: var(--muted);
-            padding: 10px 6px;
+            padding: 8px 6px;
             border-radius: 6px;
             background: var(--item-bg);
             scroll-snap-align: start;
@@ -664,8 +702,8 @@
         }
 
         .hr .ic {
-            font-size: 24px;
-            margin: 7px 0 5px;
+            font-size: 21px;
+            margin: 5px 0 4px;
         }
 
         .hr .tp {
@@ -682,12 +720,12 @@
 
         .day {
             display: grid;
-            grid-template-columns: 54px 36px minmax(0, 1fr) 58px 72px;
+            grid-template-columns: 48px 30px minmax(0, 1fr) 48px 58px;
             align-items: center;
-            gap: 10px;
-            padding: 9px 0;
+            gap: 8px;
+            padding: 6px 0;
             border-bottom: 1px solid var(--line-soft);
-            font-size: 13px;
+            font-size: 12px;
         }
 
         .day:last-child {
@@ -700,7 +738,7 @@
         }
 
         .day .di {
-            font-size: 22px;
+            font-size: 19px;
             text-align: center;
         }
 
@@ -737,9 +775,9 @@
         .idx {
             background: var(--item-bg);
             border-radius: 6px;
-            padding: 10px;
-            font-size: 12px;
-            min-height: 74px;
+            padding: 8px;
+            font-size: 11px;
+            min-height: 58px;
         }
 
         .idx .in {
@@ -758,7 +796,7 @@
             color: var(--muted);
             line-height: 1.4;
             display: -webkit-box;
-            -webkit-line-clamp: 2;
+            -webkit-line-clamp: 1;
             -webkit-box-orient: vertical;
             overflow: hidden;
         }
@@ -832,14 +870,23 @@
             #content {
                 grid-template-columns: repeat(2, minmax(0, 1fr));
                 grid-template-areas:
-                    "now air"
-                    "sun index"
-                    "hourly hourly"
-                    "daily daily";
+                    "now hourly"
+                    "air sun"
+                    "daily daily"
+                    "index index";
             }
 
-            .now-card {
-                min-height: 280px;
+            .now-card,
+            .hourly-card {
+                min-height: 220px;
+            }
+
+            .daily-list {
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+            }
+
+            .lyrics-tools {
+                display: none;
             }
 
             .idx-grid {
@@ -892,6 +939,10 @@
             .lyric-kr-base,
             .lyric-kr-fill {
                 font-size: 17px;
+            }
+
+            .daily-list {
+                grid-template-columns: 1fr;
             }
 
             .lyric-cn {
@@ -978,7 +1029,7 @@
         </div>
         <div class="lyrics-dock" id="lyricsDock">
             <div class="lyrics-label">
-                <span>SYNCED LYRICS</span>
+                <span>TIMED LYRICS</span>
                 <strong>이별을 걷는다</strong>
                 <em>走向离别</em>
             </div>
@@ -991,9 +1042,9 @@
                     </div>
                     <div class="lyric-cn" id="lyricCurrentCn">歌词会跟随音乐同步显示</div>
                 </div>
-                <div class="lyric-near" id="lyricNext">中韩双语 KTV 模式</div>
+                <div class="lyric-near" id="lyricNext">按时间轴切换歌词</div>
             </div>
-            <div class="lyrics-clock" id="lyricClock">00:00</div>
+            <div class="lyrics-tools"><div class="lyrics-clock" id="lyricClock">00:00</div><div class="lyric-shift"><button id="lyricEarlier" type="button">提前</button><button id="lyricLater" type="button">延后</button></div></div>
         </div>
         <div id="content">
             <div class="loading">
@@ -1081,7 +1132,7 @@
                 var dailys = (d.dailys && d.dailys.dailyweathers) || [];
                 var hrs = (d.hourlys && d.hourlys.hourlyweathers) || [];
                 var aqi = d.aqi || {};
-                var idxs = (d.additionalLiveInfos || []).slice(0, 10);
+                var idxs = (d.additionalLiveInfos || []).slice(0, 6);
                 var tdy = dailys[0] || {};
                 var sr = (tdy.sunRiseFmt || '').match(/T(\d{2}:\d{2})/);
                 var ss = (tdy.sunSetFmt || '').match(/T(\d{2}:\d{2})/);
@@ -1129,10 +1180,10 @@
                 }
 
                 if (dailys.length) {
-                    h += '<div class="card daily-card"><div class="section-head"><div class="sec">' + dailys.length + ' 天预报</div><div class="section-note">趋势</div></div>';
+                    h += '<div class="card daily-card"><div class="section-head"><div class="sec">' + dailys.length + ' 天预报</div><div class="section-note">趋势</div></div><div class="daily-list">';
                     var lbs = ['今天', '明天', '后天'];
 
-                    for (var j = 0; j < Math.min(dailys.length, 8); j++) {
+                    for (var j = 0; j < Math.min(dailys.length, 16); j++) {
                         var dy = dailys[j];
                         var dd = dy.conditionDay || {};
                         var nn = dy.conditionNight || {};
@@ -1150,7 +1201,7 @@
                         h += '<div class="day"><div class="dw">' + lb + '<br><span style="font-size:10px;font-weight:400;color:var(--muted)">' + sd + '</span></div><div class="di">' + ico(dd.weatherid) + '</div><div class="dd">' + (dd.weathertext || '') + ' / ' + (nn.weathertext || '') + '</div><div class="dr">' + rs + '</div><div class="dt">' + dy.maxtemp + '°<span class="lo">' + dy.mintemp + '°</span></div></div>';
                     }
 
-                    h += '</div>';
+                    h += '</div></div>';
                 }
 
                 if (idxs.length) {
@@ -1336,7 +1387,7 @@
             }
 
 
-            var LYRICS_LRC = "[ti:이별을 걷는다 (走向离别)]\r\n[ar:모던 쥬스 (Modern Juice)]\r\n[al:장미빛 연인들 OST (蔷薇色的恋人们 OST)]\r\n[by:weather-card]\r\n[00:00.00]가끔 / 偶尔\r\n[00:09.00]생각이 날 때 자꾸 보고 싶을 때 / 想起你的时候，总是想见你的时候\r\n[00:19.00]너의 얼굴이 아른거릴 때 / 你的脸庞在眼前若隐若现的时候\r\n[00:28.00]고장난 시계처럼 멈춰버린 기억 속에서 / 就像坏掉的时钟，在静止的记忆中\r\n[00:38.00]너를 찾아내곤 해 / 我总会去寻觅你的身影\r\n[00:45.00]너는 웃고 있지만 슬퍼 보여 / 即使你笑着，却看起来很悲伤\r\n[00:52.00]애써 참고 있지만 아파 보여 / 即使你努力忍耐，却看起来很痛苦\r\n[01:00.00]미처 내가 몰랐던 너의 사랑을 / 我曾经未曾察觉到的，你的爱\r\n[01:10.00]이제 하나하나씩 느껴 / 现在我一点一滴地感受到了\r\n[01:20.00]내 사랑이 조금 느려서 / 因为我的爱有些迟钝\r\n[01:30.00]이제야 너를 따라서 / 直到现在才跟随着你\r\n[01:40.00]한걸음 또 한걸음 이별을 걷는다 / 一步又一步地走向离别\r\n[01:55.00]그 오랜 시간이 걸려도 / 即使要花上漫长的时间\r\n[02:05.00]언제나 너의 뒤에서 돌아와 주길 기다려본다 / 我也会一直在你身后，等待着你能回来\r\n[02:15.00]이 곳에서 / 就在这里\r\n[02:31.00]가슴이 답답하고 마음이 또 먹먹해지면 / 当胸口发闷，心里又变得沉甸甸时\r\n[02:45.00]니가 니가 그립다 / 我想念你，想念着你\r\n[02:55.00]오래된 필름처럼 따스하게 / 像老胶片一样温暖地\r\n[03:05.00]나를 사랑해주던 니 모습이 / 你曾经爱过我的模样\r\n[03:15.00]너무나도 선명해 손 내밀면 / 如此清晰，仿佛一伸手\r\n[03:25.00]손끝에 닿을 것만 같아 / 就能触碰到指尖\r\n[03:35.00]내 사랑이 너를 부른다 / 我的爱在呼唤你\r\n[03:40.00]이제야 너를 찾는다 / 直到现在才开始寻找你\r\n[03:50.00]한번만 꼭 한 번만 널 보고 싶다고 / 想见你一面，哪怕就只有一次\r\n[04:00.00]그 오랜 시간이 걸려도 / 即使要花上漫长的时间\r\n[04:01.00]언제나 너의 뒤에서 돌아와 주길 기다려본다 / 我也会一直在你身后，等待着你能回来";
+            var LYRICS_LRC = "[ti:이별을 걷는다 (走向离别)]\n[ar:모던 쥬스 (Modern Juice)]\n[al:장미빛 연인들 OST (蔷薇色的恋人们 OST)]\n[by:weather-card]\n[00:15.00]가끔 생각이 날 때 / 偶尔想起你的时候\n[00:18.00]자꾸 보고 싶을 때 / 总是想见你的时候\n[00:22.00]너의 얼굴이 아른거릴 때 / 你的脸庞在眼前若隐若现的时候\n[00:29.00]고장 난 시계처럼 / 就像坏掉的时钟一样\n[00:32.00]멈춰버린 기억 속에서 / 在已经静止的记忆中\n[00:36.00]너를 찾아내곤 해 / 我总会去寻觅你的身影\n[00:43.00]너는 웃고 있지만 슬퍼 보여 / 即使你笑着，却看起来很悲伤\n[00:50.00]애써 참고 있지만 아파 보여 / 即使你努力忍耐，却看起来很痛苦\n[00:56.00]미처 내가 몰랐던 너의 사랑을 / 我曾经未曾察觉到的，你的爱\n[01:03.00]이제 하나하나씩 느껴 / 现在我一点一滴地感受到了\n[01:10.00]내 사랑이 조금 느려서 / 因为我的爱有些迟钝\n[01:16.00]이제야 너를 따라서 / 直到现在才跟随着你\n[01:23.00]한걸음 또 한걸음 이별을 걷는다 / 一步又一步地走向离别\n[01:31.00]그 오랜 시간이 걸려도 / 即使要花上漫长的时间\n[01:38.00]언제나 너의 뒤에서 / 我也会一直在你身后\n[01:44.00]돌아와 주길 기다려본다 / 等待着你能回来\n[01:50.00]이 곳에서 / 就在这里\n[02:04.00]가슴이 답답하고 / 当胸口感到发闷\n[02:08.00]마음이 또 먹먹해지면 / 当心里又变得沉甸甸时\n[02:12.00]니가 니가 그립다 / 我想念你，想念着你\n[02:18.00]오래된 필름처럼 따스하게 / 像老胶片一样温暖地\n[02:25.00]나를 사랑해주던 니 모습이 / 你曾经爱过我的模样\n[02:32.00]너무나도 선명해 손 내밀면 / 如此清晰，仿佛一伸手\n[02:38.00]손끝에 닿을 것만 같아 / 就能触碰到指尖\n[02:44.00]내 사랑이 너를 부른다 / 我的爱在呼唤你\n[02:51.00]이제야 너를 찾는다 / 直到现在才开始寻找你\n[02:58.00]한번만 꼭 한 번만 널 보고 싶다고 / 想见你一面，哪怕就只有一次\n[03:06.00]그 오랜 시간이 걸려도 / 即使要花上漫长的时间\n[03:12.00]언제나 너의 뒤에서 / 我也会一直在你身后\n[03:19.00]돌아와 주길 기다려본다 / 等待着你能回来\n[03:25.00]이 곳에서 / 就在这里\n[03:29.00]니가 아니면 / 如果不是你\n[03:32.00]그 누구도 빈자리를 채울 수 없어 / 谁也无法填补这空缺\n[03:38.00]그게 바로 너여야 해 / 那个人必须是你\n[03:41.00]너여야만 해 / 只能是你\n[03:45.00]내 사랑이 조금 느려서 / 因为我的爱有些迟钝\n[03:52.00]이제야 너를 따라서 / 直到现在才跟随着你\n[03:59.00]한걸음 또 한걸음 이별을 걷는다 / 一步又一步地走向离别";
 
             function parseLyrics(lrc) {
                 return lrc.split(/\r?\n/).map(function(line) {
@@ -1371,8 +1422,13 @@
                 var currentCn = document.getElementById('lyricCurrentCn');
                 var next = document.getElementById('lyricNext');
                 var clock = document.getElementById('lyricClock');
+                var earlier = document.getElementById('lyricEarlier');
+                var later = document.getElementById('lyricLater');
                 var lines = parseLyrics(LYRICS_LRC);
                 var activeIndex = -1;
+                var rafId = 0;
+                var savedOffset = Number(localStorage.getItem('weatherCardLyricOffsetV4'));
+                var lyricOffset = Number.isNaN(savedOffset) ? 0 : savedOffset;
 
                 if (!audio || !lines.length) return;
 
@@ -1398,7 +1454,7 @@
                 }
 
                 function updateLyrics() {
-                    var time = audio.currentTime || 0;
+                    var time = Math.max(0, (audio.currentTime || 0) + lyricOffset);
                     var index = findLineIndex(time);
 
                     if (index !== activeIndex) {
@@ -1406,15 +1462,42 @@
                         setLine(index);
                     }
 
-                    if (clock) clock.textContent = formatLyricTime(time);
+                    if (clock) clock.textContent = formatLyricTime(audio.currentTime || 0);
+                }
+
+                function loop() {
+                    updateLyrics();
+                    rafId = requestAnimationFrame(loop);
+                }
+
+                function saveOffset() {
+                    localStorage.setItem('weatherCardLyricOffsetV4', String(lyricOffset));
+                    activeIndex = -1;
+                    updateLyrics();
+                }
+
+                if (earlier) {
+                    earlier.addEventListener('click', function() {
+                        lyricOffset = Math.min(20, lyricOffset + 0.5);
+                        saveOffset();
+                    });
+                }
+
+                if (later) {
+                    later.addEventListener('click', function() {
+                        lyricOffset = Math.max(-20, lyricOffset - 0.5);
+                        saveOffset();
+                    });
                 }
 
                 setLine(0);
                 updateLyrics();
-                audio.addEventListener('timeupdate', updateLyrics);
+                cancelAnimationFrame(rafId);
+                loop();
                 audio.addEventListener('seeked', updateLyrics);
                 audio.addEventListener('play', updateLyrics);
-            }            function setupMusic() {
+            }
+            function setupMusic() {
                 var player = document.getElementById('musicPlayer');
                 var audio = document.getElementById('bgMusic');
                 var toggle = document.getElementById('musicToggle');
