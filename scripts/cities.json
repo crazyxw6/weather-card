@@ -15,12 +15,12 @@
   { "name": "青岛", "code": "370200", "codeType": "2" },
   { "name": "长沙", "code": "430100", "codeType": "2" },
   { "name": "郑州", "code": "410100", "codeType": "2" },
+  { "name": "济源", "code": "419001", "codeType": "2" },
+  { "name": "洛阳", "code": "410300", "codeType": "2" },
   { "name": "昆明", "code": "530100", "codeType": "2" },
   { "name": "沈阳", "code": "210100", "codeType": "2" },
   { "name": "大连", "code": "210200", "codeType": "2" },
   { "name": "哈尔滨", "code": "230100", "codeType": "2" },
   { "name": "三亚", "code": "460200", "codeType": "2" },
   { "name": "香港", "code": "810000", "codeType": "2" }
-  { "name": "济源", "code": "419001", "codeType": "2" },
 ]
-
