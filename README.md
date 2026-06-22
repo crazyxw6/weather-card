@@ -1,95 +1,92 @@
-# 天气卡片
+# Weather Card
 
-这是一个可以完全放在 GitHub 上运行的天气卡片项目。
+Weather Card is a small weather app that runs entirely on GitHub.
 
-- GitHub Pages 显示网页。
-- GitHub Actions 定时更新天气数据。
-- API key 放在 GitHub Secrets，不写进公开代码。
-- GitHub Releases 可以自动生成一个小于 10MB 的 Windows zip。
+- GitHub Pages hosts the web page.
+- GitHub Actions updates the weather data every 3 hours.
+- The weather API key is stored in GitHub Secrets, not in public code.
+- GitHub Releases can build a Windows zip package under 10 MB.
 
-## 第一步：新建 GitHub 仓库
+## Live Site
 
-1. 打开 GitHub。
-2. 点右上角 `+`，选择 `New repository`。
-3. 仓库名可以填 `weather-card`。
-4. 选择 `Public`。
-5. 点 `Create repository`。
-
-## 第二步：上传这些文件
-
-把这个项目里的所有文件上传到你的 GitHub 仓库。
-
-上传后，仓库首页应该能看到：
+After GitHub Pages is enabled, the site will usually be available at:
 
 ```text
-.github/
-data/
-scripts/
-windows/
+https://crazyxw6.github.io/weather-card/
+```
+
+## Repository Files
+
+```text
+.github/workflows/update-weather.yml
+.github/workflows/release.yml
+data/weather.json
+scripts/cities.json
+scripts/update-weather.mjs
+windows/README.txt
 index.html
 README.md
 ```
 
-## 第三步：添加天气 API key
+## Weather API Secret
 
-1. 打开仓库的 `Settings`。
-2. 左侧点 `Secrets and variables`。
-3. 点 `Actions`。
-4. 点 `New repository secret`。
-5. Name 填：
+Add a repository secret named:
 
 ```text
 WEATHER_API_KEY
 ```
 
-6. Secret 填你的最美天气 API key。
-7. 点 `Add secret`。
+Steps:
 
-## 第四步：运行一次天气更新
+1. Open the repository on GitHub.
+2. Go to `Settings`.
+3. Open `Secrets and variables` -> `Actions`.
+4. Click `New repository secret`.
+5. Set `Name` to `WEATHER_API_KEY`.
+6. Paste your weather API key into `Secret`.
+7. Click `Add secret`.
 
-1. 打开仓库的 `Actions`。
-2. 左侧点 `更新天气数据`。
-3. 点 `Run workflow`。
-4. 等它变成绿色成功。
+## Update Weather Data
 
-之后它会每 3 小时自动更新一次。
+1. Open the `Actions` tab.
+2. Select `Update Weather Data`.
+3. Click `Run workflow`.
+4. Wait until the workflow finishes successfully.
 
-## 第五步：开启 GitHub Pages
+The workflow also runs automatically every 3 hours.
 
-1. 打开仓库的 `Settings`。
-2. 左侧点 `Pages`。
-3. `Source` 选择 `Deploy from a branch`。
-4. `Branch` 选择 `main`，文件夹选择 `/root`。
-5. 点 `Save`。
+## Enable GitHub Pages
 
-等一会儿，GitHub 会给你一个网址，通常长这样：
+1. Open `Settings`.
+2. Open `Pages`.
+3. Set `Source` to `Deploy from a branch`.
+4. Set `Branch` to `main` and folder to `/root`.
+5. Click `Save`.
+
+## Build the Windows Release
+
+1. Open the `Actions` tab.
+2. Select `Build Windows Release`.
+3. Click `Run workflow`.
+4. Enter a version, for example:
 
 ```text
-https://你的用户名.github.io/weather-card/
+v1.0.5
 ```
 
-## 第六步：生成 Windows zip
+5. Wait until the workflow finishes successfully.
+6. Open `Releases`.
+7. Download `weather-card-windows.zip`.
 
-1. 打开仓库的 `Actions`。
-2. 左侧点 `生成 Windows Release`。
-3. 点 `Run workflow`。
-4. version 填：
+After extracting the zip, run:
 
 ```text
-v1.0.0
+WeatherCard.exe
 ```
 
-5. 等它变成绿色成功。
-6. 打开仓库右侧的 `Releases`。
-7. 下载 `weather-card-windows.zip`。
+## Notes
 
-用户解压后双击 `start-weather-card.bat`，就会打开你的 GitHub Pages 天气卡片。
+The Windows app opens Weather Card in a standalone app window. It still needs an internet connection because weather data is updated online.
 
-## 常见问题
-
-如果网页只有示例数据，说明还没有成功运行 `更新天气数据`。
-
-如果 Actions 报 `缺少 GitHub Secret：WEATHER_API_KEY`，说明第三步没有设置好。
-
-如果 Windows zip 打不开网页，先确认 GitHub Pages 已经开启，并且网页网址能在浏览器里正常打开。
+If the app does not open, update Microsoft Edge or install Microsoft Edge WebView2 Runtime.
 
