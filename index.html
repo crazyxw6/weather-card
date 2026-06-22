@@ -7,6 +7,70 @@
 <link rel="shortcut icon" href="./assets/app.ico?v=2">
 <link rel="apple-touch-icon" href="./assets/logo.png?v=2">
 <title>天气卡片</title>
+    @media (min-width: 820px) {
+    body {
+        align-items: flex-start;
+        padding: 32px 24px;
+        background-image: none;
+    }
+
+    .wrap {
+        max-width: 1080px;
+        gap: 16px;
+    }
+
+    #content {
+        display: grid;
+        grid-template-columns: minmax(340px, 420px) minmax(0, 1fr);
+        gap: 16px;
+        align-items: start;
+    }
+
+    #content > .now-card {
+        grid-column: 1;
+        grid-row: 1 / span 4;
+        min-height: 360px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        position: sticky;
+        top: 32px;
+    }
+
+    #content > .card:not(.now-card) {
+        grid-column: 2;
+    }
+
+    #content > .card:nth-of-type(n+5) {
+        grid-column: 1 / -1;
+    }
+
+    .now-icon {
+        font-size: 64px;
+    }
+
+    .now-temp {
+        font-size: 64px;
+    }
+
+    .hourly {
+        gap: 14px;
+    }
+
+    .hr {
+        min-width: 58px;
+    }
+
+    .idx-grid {
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+    }
+}
+
+@media (max-width: 819px) {
+    .wrap {
+        max-width: 420px;
+    }
+}
     <style>
         :root {
             --bg: #0f172a;
