@@ -1,0 +1,89 @@
+{
+  "updatedAt": "2026-06-22T00:00:00.000Z",
+  "isSample": true,
+  "cities": [
+    { "name": "上海", "code": "01012601" },
+    { "name": "北京", "code": "01010101" },
+    { "name": "广州", "code": "01010704" },
+    { "name": "深圳", "code": "01010715" },
+    { "name": "杭州", "code": "01013401" },
+    { "name": "成都", "code": "01012703" },
+    { "name": "南京", "code": "320100", "codeType": "2" },
+    { "name": "武汉", "code": "420100", "codeType": "2" },
+    { "name": "西安", "code": "610100", "codeType": "2" },
+    { "name": "重庆", "code": "500100", "codeType": "2" },
+    { "name": "天津", "code": "120100", "codeType": "2" },
+    { "name": "苏州", "code": "320500", "codeType": "2" },
+    { "name": "厦门", "code": "350200", "codeType": "2" },
+    { "name": "青岛", "code": "370200", "codeType": "2" },
+    { "name": "长沙", "code": "430100", "codeType": "2" },
+    { "name": "郑州", "code": "410100", "codeType": "2" },
+    { "name": "昆明", "code": "530100", "codeType": "2" },
+    { "name": "沈阳", "code": "210100", "codeType": "2" },
+    { "name": "大连", "code": "210200", "codeType": "2" },
+    { "name": "哈尔滨", "code": "230100", "codeType": "2" },
+    { "name": "三亚", "code": "460200", "codeType": "2" },
+    { "name": "香港", "code": "810000", "codeType": "2" }
+  ],
+  "weather": {
+    "01012601:": {
+      "condition": {
+        "weatherid": 2,
+        "weathertext": "示例天气",
+        "temperature": 26,
+        "realfeel": 27,
+        "humidity": 68,
+        "winddirtext": "东南风",
+        "windlevel": 2,
+        "visibility": 10,
+        "pressure": 1008,
+        "updatetimeFmt": "2026-06-22T08:00:00"
+      },
+      "aqi": {
+        "aqivalue": 45,
+        "aqivaluetext": "优",
+        "pm25": 12,
+        "pm10": 24,
+        "o3": 80,
+        "no2": 18
+      },
+      "hourlys": {
+        "hourlyweathers": [
+          { "dateFmt": "2026-06-22T09:00:00", "weatherid": 2, "temp": 27, "precipitation": 0 },
+          { "dateFmt": "2026-06-22T10:00:00", "weatherid": 3, "temp": 28, "precipitation": 0 },
+          { "dateFmt": "2026-06-22T11:00:00", "weatherid": 5, "temp": 29, "precipitation": 0.2 }
+        ]
+      },
+      "dailys": {
+        "dailyweathers": [
+          {
+            "publictimeFmt": "2026-06-22T08:00:00",
+            "maxtemp": 30,
+            "mintemp": 24,
+            "sunRiseFmt": "2026-06-22T04:50:00",
+            "sunSetFmt": "2026-06-22T19:02:00",
+            "conditionDay": { "weatherid": 2, "weathertext": "多云", "rain": 0 },
+            "conditionNight": { "weatherid": 5, "weathertext": "阴", "rain": 0 }
+          },
+          {
+            "publictimeFmt": "2026-06-23T08:00:00",
+            "maxtemp": 31,
+            "mintemp": 25,
+            "conditionDay": { "weatherid": 3, "weathertext": "晴间多云", "rain": 0 },
+            "conditionNight": { "weatherid": 10, "weathertext": "小雨", "rain": 1.2 }
+          }
+        ]
+      },
+      "additionalLiveInfos": [
+        {
+          "name": "穿衣",
+          "levelList": [
+            { "day": "2026-06-22", "status": "舒适", "content": "示例数据。设置 GitHub Secret 后会自动更新为真实天气。" }
+          ]
+        }
+      ]
+    }
+  },
+  "errors": {}
+}
+
