@@ -4,7 +4,7 @@ const WEATHER_API = 'https://sh1pub.zuimeitianqi.com/pubDataServer/getweatherpub
 const apiKey = process.env.WEATHER_API_KEY;
 
 if (!apiKey) {
-  throw new Error('缺少 GitHub Secret：WEATHER_API_KEY');
+  throw new Error('Missing GitHub Secret: WEATHER_API_KEY');
 }
 
 const cities = JSON.parse(await readFile(new URL('./cities.json', import.meta.url), 'utf8'));
@@ -47,7 +47,7 @@ for (const city of cities) {
 }
 
 if (Object.keys(weather).length === 0) {
-  throw new Error('所有城市的天气数据都更新失败，请检查 WEATHER_API_KEY 或天气接口状态。');
+  throw new Error('Weather data update failed for every city. Please check WEATHER_API_KEY or the weather API status.');
 }
 
 await mkdir(new URL('../data/', import.meta.url), { recursive: true });
@@ -62,5 +62,5 @@ await writeFile(
   'utf8',
 );
 
-console.log(`已更新 ${Object.keys(weather).length} 个城市。`);
+console.log(`Updated weather data for ${Object.keys(weather).length} cities.`);
 
