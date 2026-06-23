@@ -10,17 +10,17 @@
     <style>
         :root {
             color-scheme: dark;
-            --bg: #030303;
-            --page-bg: #030303;
-            --star-bg: radial-gradient(circle at 50% 18%, #101722 0%, #050505 45%, #010101 100%);
-            --star-rgb: 245, 245, 247;
+            --bg: #000000;
+            --page-bg: #000000;
+            --star-bg: #000000;
+            --star-rgb: 255, 255, 255;
             --link-rgb: 56, 189, 248;
-            --panel: rgba(18, 18, 20, .48);
-            --panel-2: rgba(255, 255, 255, .055);
-            --panel-3: rgba(255, 255, 255, .08);
-            --panel-pop: rgba(12, 12, 14, .78);
-            --line: rgba(255, 255, 255, .16);
-            --line-soft: rgba(255, 255, 255, .09);
+            --panel: transparent;
+            --panel-2: rgba(255, 255, 255, .025);
+            --panel-3: rgba(255, 255, 255, .045);
+            --panel-pop: rgba(0, 0, 0, .82);
+            --line: rgba(255, 255, 255, .18);
+            --line-soft: rgba(255, 255, 255, .10);
             --text: #f5f5f7;
             --sub: #b8b8bd;
             --muted: #7d7d84;
@@ -28,44 +28,44 @@
             --accent-soft: rgba(56, 189, 248, .16);
             --green: #30d158;
             --danger: #ff453a;
-            --control-bg: rgba(12, 12, 14, .62);
-            --control-active-bg: rgba(18, 24, 28, .7);
-            --card-bg: linear-gradient(180deg, rgba(255, 255, 255, .07), rgba(255, 255, 255, .035));
-            --item-bg: rgba(255, 255, 255, .045);
-            --icon-bg: rgba(255, 255, 255, .055);
+            --control-bg: rgba(0, 0, 0, .18);
+            --control-active-bg: rgba(255, 255, 255, .05);
+            --card-bg: transparent;
+            --item-bg: rgba(255, 255, 255, .035);
+            --icon-bg: rgba(255, 255, 255, .035);
             --aqi-bg: rgba(48, 209, 88, .13);
-            --shadow: 0 22px 70px rgba(0, 0, 0, .24);
+            --shadow: none;
             --radius: 8px;
-            --blur: blur(24px) saturate(160%);
+            --blur: none;
         }
 
         :root[data-theme="light"] {
-            color-scheme: light;
-            --bg: #f5f5f7;
-            --page-bg: #f5f5f7;
-            --star-bg: radial-gradient(circle at 50% 18%, #ffffff 0%, #f5f7fb 45%, #eef1f6 100%);
-            --star-rgb: 87, 96, 112;
-            --link-rgb: 0, 122, 255;
-            --panel: rgba(255, 255, 255, .54);
-            --panel-2: rgba(0, 0, 0, .045);
-            --panel-3: rgba(0, 0, 0, .065);
-            --panel-pop: rgba(255, 255, 255, .78);
-            --line: rgba(0, 0, 0, .12);
-            --line-soft: rgba(0, 0, 0, .08);
-            --text: #1d1d1f;
-            --sub: #424245;
-            --muted: #6e6e73;
-            --accent: #007aff;
-            --accent-soft: rgba(0, 122, 255, .12);
-            --green: #248a3d;
-            --danger: #ff3b30;
-            --control-bg: rgba(255, 255, 255, .66);
-            --control-active-bg: rgba(232, 244, 255, .78);
-            --card-bg: linear-gradient(180deg, rgba(255, 255, 255, .76), rgba(255, 255, 255, .46));
-            --item-bg: rgba(0, 0, 0, .045);
-            --icon-bg: rgba(0, 0, 0, .05);
-            --aqi-bg: rgba(36, 138, 61, .12);
-            --shadow: 0 22px 70px rgba(31, 35, 42, .12);
+            color-scheme: dark;
+            --bg: #000000;
+            --page-bg: #000000;
+            --star-bg: #000000;
+            --star-rgb: 255, 255, 255;
+            --link-rgb: 255, 255, 255;
+            --panel: transparent;
+            --panel-2: rgba(255, 255, 255, .025);
+            --panel-3: rgba(255, 255, 255, .045);
+            --panel-pop: rgba(0, 0, 0, .82);
+            --line: rgba(255, 255, 255, .18);
+            --line-soft: rgba(255, 255, 255, .10);
+            --text: #f5f5f7;
+            --sub: #c7c7cc;
+            --muted: #8e8e93;
+            --accent: #ffffff;
+            --accent-soft: rgba(255, 255, 255, .10);
+            --green: #30d158;
+            --danger: #ff453a;
+            --control-bg: rgba(0, 0, 0, .18);
+            --control-active-bg: rgba(255, 255, 255, .05);
+            --card-bg: transparent;
+            --item-bg: rgba(255, 255, 255, .035);
+            --icon-bg: rgba(255, 255, 255, .035);
+            --aqi-bg: rgba(48, 209, 88, .12);
+            --shadow: none;
         }
 
         * {
@@ -80,18 +80,12 @@
 
         html,
         body {
-            cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='32' height='32' viewBox='0 0 32 32'%3E%3Cpath fill='%23f8fafc' stroke='%2338bdf8' stroke-width='1.5' d='M16 2l3.6 9.2L29 12.2l-7.1 6.3L24 28l-8-4.9L8 28l2.1-9.5L3 12.2l9.4-1L16 2z'/%3E%3C/svg%3E") 16 16, auto;
-        }
-
-        button,
-        .city-item,
-        input[type="range"] {
-            cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='32' height='32' viewBox='0 0 32 32'%3E%3Cpath fill='%23f8fafc' stroke='%2338bdf8' stroke-width='1.5' d='M16 2l3.6 9.2L29 12.2l-7.1 6.3L24 28l-8-4.9L8 28l2.1-9.5L3 12.2l9.4-1L16 2z'/%3E%3C/svg%3E") 16 16, pointer;
+            cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='18' height='18' viewBox='0 0 18 18'%3E%3Cpath fill='%23ffffff' stroke='%23000000' stroke-opacity='.55' stroke-width='1' d='M3 2l10 7-5.2 1.1L5.2 16 3 2z'/%3E%3C/svg%3E") 3 2, pointer;
         }
 
         body {
             min-height: 100vh;
-            background: var(--page-bg);
+            background: #000;
             color: var(--text);
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Microsoft YaHei", sans-serif;
             display: flex;
@@ -110,7 +104,7 @@
             z-index: 0;
             pointer-events: none;
             background: var(--star-bg);
-            transition: background .25s ease;
+            transition: none;
         }
 
         .wrap {
@@ -153,8 +147,8 @@
         .refresh {
             border: 1px solid var(--line-soft);
             background: var(--control-bg);
-            backdrop-filter: var(--blur);
-            -webkit-backdrop-filter: var(--blur);
+            backdrop-filter: none;
+            -webkit-backdrop-filter: none;
         }
 
         .music-player {
@@ -237,8 +231,8 @@
             border-radius: var(--radius);
             background: var(--card-bg);
             box-shadow: var(--shadow);
-            backdrop-filter: var(--blur);
-            -webkit-backdrop-filter: var(--blur);
+            backdrop-filter: none;
+            -webkit-backdrop-filter: none;
         }
 
         .lyrics-label span {
@@ -357,6 +351,8 @@
             color: var(--text);
             font-size: 15px;
             flex-shrink: 0;
+        
+            display: none;
         }
 
         .refresh {
@@ -395,8 +391,8 @@
             box-shadow: var(--shadow);
             z-index: 50;
             display: none;
-            backdrop-filter: var(--blur);
-            -webkit-backdrop-filter: var(--blur);
+            backdrop-filter: none;
+            -webkit-backdrop-filter: none;
         }
 
         .city-panel.show {
@@ -457,9 +453,9 @@
             border-radius: var(--radius);
             padding: 18px;
             box-shadow: var(--shadow);
-            backdrop-filter: var(--blur);
-            -webkit-backdrop-filter: var(--blur);
-            transition: background .25s ease, border-color .25s ease, box-shadow .25s ease;
+            backdrop-filter: none;
+            -webkit-backdrop-filter: none;
+            transition: border-color .2s ease;
         }
 
         .now-card {
@@ -685,6 +681,11 @@
             min-height: 16px;
         }
 
+        .hr .rn.zero {
+            color: var(--muted);
+            opacity: .56;
+        }
+
         .day {
             display: grid;
             grid-template-columns: 48px 30px minmax(0, 1fr) 48px 58px;
@@ -720,6 +721,11 @@
             color: var(--accent);
             text-align: right;
             font-size: 12px;
+        }
+
+        .day .dr.zero {
+            color: var(--muted);
+            opacity: .56;
         }
 
         .day .dt {
@@ -1130,9 +1136,7 @@
                         var m = (x.dateFmt || '').match(/T(\d{2}):/);
                         var tl = m ? m[1] + ':00' : '';
                         var rain = Number(x.precipitation || 0);
-                        var rn = rain > 0
-                            ? '<div class="rn">' + rain.toFixed(1) + 'mm</div>'
-                            : '<div class="rn" style="color:var(--muted);">·</div>';
+                        var rn = '<div class="rn' + (rain > 0 ? '' : ' zero') + '">' + rain.toFixed(1) + 'mm</div>';
 
                         h += '<div class="hr"><div class="t">' + tl + '</div><div class="ic">' + ico(x.weatherid) + '</div><div class="tp">' + x.temp + '°</div>' + rn + '</div>';
                     }
@@ -1149,7 +1153,8 @@
                         var dd = dy.conditionDay || {};
                         var nn = dy.conditionNight || {};
                         var rt = parseFloat(dd.rain || 0) + parseFloat(nn.rain || 0);
-                        var rs = rt > 0 ? (rt.toFixed(1) + 'mm') : '';
+                        var rs = rt.toFixed(1) + 'mm';
+                        var rainClass = rt > 0 ? 'dr' : 'dr zero';
                         var ds = (dy.publictimeFmt || '').substring(0, 10);
                         var ps = ds.split('-');
                         var sd = ps.length === 3 ? (parseInt(ps[1]) + '/' + parseInt(ps[2])) : '';
@@ -1159,7 +1164,7 @@
                             lb = ['周日', '周一', '周二', '周三', '周四', '周五', '周六'][new Date(ds).getDay()];
                         }
 
-                        h += '<div class="day"><div class="dw">' + lb + '<br><span style="font-size:10px;font-weight:400;color:var(--muted)">' + sd + '</span></div><div class="di">' + ico(dd.weatherid) + '</div><div class="dd">' + (dd.weathertext || '') + ' / ' + (nn.weathertext || '') + '</div><div class="dr">' + rs + '</div><div class="dt">' + dy.maxtemp + '°<span class="lo">' + dy.mintemp + '°</span></div></div>';
+                        h += '<div class="day"><div class="dw">' + lb + '<br><span style="font-size:10px;font-weight:400;color:var(--muted)">' + sd + '</span></div><div class="di">' + ico(dd.weatherid) + '</div><div class="dd">' + (dd.weathertext || '') + ' / ' + (nn.weathertext || '') + '</div><div class="' + rainClass + '">' + rs + '</div><div class="dt">' + dy.maxtemp + '°<span class="lo">' + dy.mintemp + '°</span></div></div>';
                     }
 
                     h += '</div></div>';
@@ -1253,8 +1258,8 @@
                     toggle.setAttribute('aria-label', theme === 'light' ? '切换深色模式' : '切换浅色模式');
                 }
 
-                var saved = localStorage.getItem('weatherCardTheme') || 'dark';
-                applyTheme(saved === 'light' ? 'light' : 'dark');
+                localStorage.setItem('weatherCardTheme', 'dark');
+                applyTheme('dark');
 
                 toggle.addEventListener('click', function() {
                     var next = document.documentElement.dataset.theme === 'light' ? 'dark' : 'light';
@@ -1279,17 +1284,17 @@
                     canvas.style.height = window.innerHeight + 'px';
                     ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
 
-                    var count = Math.min(260, Math.floor(window.innerWidth * window.innerHeight / 7200));
+                    var count = Math.min(360, Math.floor(window.innerWidth * window.innerHeight / 5200));
                     stars = [];
 
                     for (var i = 0; i < count; i++) {
                         stars.push({
                             x: Math.random() * window.innerWidth,
                             y: Math.random() * window.innerHeight,
-                            r: Math.random() * 1.25 + .25,
-                            vx: Math.random() * .16 + .025,
-                            vy: Math.random() * .1 - .05,
-                            a: Math.random() * .72 + .24
+                            r: Math.random() * .95 + .18,
+                            vx: Math.random() * .08 + .015,
+                            vy: Math.random() * .04 - .02,
+                            a: Math.random() * .62 + .28
                         });
                     }
                 }
@@ -1297,7 +1302,6 @@
                 function draw() {
                     var styles = getComputedStyle(document.documentElement);
                     var starRgb = styles.getPropertyValue('--star-rgb').trim() || '245, 245, 247';
-                    var linkRgb = styles.getPropertyValue('--link-rgb').trim() || '56, 189, 248';
 
                     ctx.clearRect(0, 0, window.innerWidth, window.innerHeight);
 
@@ -1310,19 +1314,6 @@
                         if (s.x > window.innerWidth + 10) s.x = -10;
                         if (s.y < -10) s.y = window.innerHeight + 10;
                         if (s.y > window.innerHeight + 10) s.y = -10;
-
-                        var dx = s.x - mouse.x;
-                        var dy = s.y - mouse.y;
-                        var dist = Math.sqrt(dx * dx + dy * dy);
-
-                        if (dist < 120) {
-                            ctx.beginPath();
-                            ctx.moveTo(mouse.x, mouse.y);
-                            ctx.lineTo(s.x, s.y);
-                            ctx.strokeStyle = 'rgba(' + linkRgb + ', ' + (1 - dist / 120) * .16 + ')';
-                            ctx.lineWidth = 1;
-                            ctx.stroke();
-                        }
 
                         ctx.beginPath();
                         ctx.arc(s.x, s.y, s.r, 0, Math.PI * 2);
