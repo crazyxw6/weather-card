@@ -640,12 +640,31 @@
             display: flex;
             gap: 8px;
             overflow-x: auto;
-            padding-bottom: 2px;
+            overflow-y: hidden;
+            padding-bottom: 10px;
             scroll-snap-type: x proximity;
+            scrollbar-width: thin;
+            scrollbar-color: rgba(255, 255, 255, .34) rgba(255, 255, 255, .06);
+            -webkit-overflow-scrolling: touch;
+            overscroll-behavior-x: contain;
         }
 
         .hourly::-webkit-scrollbar {
-            height: 0;
+            height: 8px;
+        }
+
+        .hourly::-webkit-scrollbar-track {
+            background: rgba(255, 255, 255, .06);
+            border-radius: 999px;
+        }
+
+        .hourly::-webkit-scrollbar-thumb {
+            background: rgba(255, 255, 255, .34);
+            border-radius: 999px;
+        }
+
+        .hourly::-webkit-scrollbar-thumb:hover {
+            background: rgba(255, 255, 255, .52);
         }
 
         .hr {
@@ -1190,6 +1209,25 @@
                 }
 
                 document.getElementById('content').innerHTML = h;
+                setupHourlyScroll();
+            }
+
+
+            function setupHourlyScroll() {
+                var scrollers = document.querySelectorAll('.hourly');
+
+                scrollers.forEach(function(scroller) {
+                    if (scroller.dataset.scrollReady === '1') return;
+                    scroller.dataset.scrollReady = '1';
+
+                    scroller.addEventListener('wheel', function(e) {
+                        if (Math.abs(e.deltaY) <= Math.abs(e.deltaX)) return;
+                        if (scroller.scrollWidth <= scroller.clientWidth) return;
+
+                        e.preventDefault();
+                        scroller.scrollLeft += e.deltaY;
+                    }, { passive: false });
+                });
             }
 
             function showErr(msg) {
