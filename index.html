@@ -20,7 +20,7 @@
             --panel: rgba(255, 255, 255, .68);
             --panel-2: rgba(255, 255, 255, .52);
             --panel-3: rgba(255, 255, 255, .76);
-            --panel-pop: rgba(255, 255, 255, .62);
+            --panel-pop: rgba(255, 255, 255, .28);
             --line: rgba(118, 132, 166, .18);
             --line-soft: rgba(118, 132, 166, .14);
             --text: #182033;
@@ -32,15 +32,15 @@
             --pink: #f28ab2;
             --green: #2fae83;
             --danger: #e15b74;
-            --control-bg: rgba(255, 255, 255, .28);
+            --control-bg: rgba(255, 255, 255, .14);
             --control-active-bg: rgba(93, 124, 255, .14);
-            --card-bg: linear-gradient(145deg, rgba(255, 255, 255, .34), rgba(255, 255, 255, .16));
-            --item-bg: rgba(255, 255, 255, .22);
+            --card-bg: linear-gradient(145deg, rgba(255, 255, 255, .08), rgba(255, 255, 255, .025));
+            --item-bg: rgba(255, 255, 255, .08);
             --icon-bg: linear-gradient(145deg, rgba(255, 255, 255, .78), rgba(225, 235, 255, .62));
             --aqi-bg: rgba(47, 174, 131, .12);
             --shadow: 0 26px 70px rgba(79, 92, 132, .16), inset 0 1px 0 rgba(255, 255, 255, .85);
             --radius: 22px;
-            --blur: blur(26px) saturate(145%);
+            --blur: blur(14px) saturate(125%);
         }
 
         :root[data-theme="dark"] {
@@ -67,8 +67,8 @@
             --danger: #ff8da2;
             --control-bg: rgba(255, 255, 255, .10);
             --control-active-bg: rgba(169, 184, 255, .16);
-            --card-bg: linear-gradient(145deg, rgba(18, 22, 32, .34), rgba(18, 22, 32, .18));
-            --item-bg: rgba(255, 255, 255, .10);
+            --card-bg: linear-gradient(145deg, rgba(10, 12, 18, .12), rgba(10, 12, 18, .045));
+            --item-bg: rgba(255, 255, 255, .08);
             --icon-bg: linear-gradient(145deg, rgba(255, 255, 255, .16), rgba(169, 184, 255, .10));
             --aqi-bg: rgba(117, 216, 181, .13);
             --shadow: 0 28px 78px rgba(0, 0, 0, .30), inset 0 1px 0 rgba(255, 255, 255, .16);
@@ -265,8 +265,8 @@
             inset: 0;
             pointer-events: none;
             border-radius: inherit;
-            background: linear-gradient(135deg, rgba(255, 255, 255, .20), transparent 46%, rgba(93, 124, 255, .04));
-            opacity: .46;
+            background: linear-gradient(135deg, rgba(255, 255, 255, .06), transparent 48%, rgba(93, 124, 255, .02));
+            opacity: .20;
         }
 
         :root[data-theme="dark"] .card::before { background: linear-gradient(135deg, rgba(255, 255, 255, .10), transparent 45%, rgba(169, 184, 255, .08)); }
@@ -282,14 +282,14 @@
             background:
                 radial-gradient(circle at 78% 20%, rgba(255, 255, 255, .74), transparent 28%),
                 radial-gradient(circle at 12% 90%, rgba(239, 224, 255, .52), transparent 30%),
-                linear-gradient(145deg, rgba(255, 255, 255, .38), rgba(241, 246, 255, .18));
+                linear-gradient(145deg, rgba(255, 255, 255, .08), rgba(241, 246, 255, .025));
         }
 
         :root[data-theme="dark"] .now-card {
             background:
                 radial-gradient(circle at 78% 20%, rgba(255, 255, 255, .14), transparent 28%),
                 radial-gradient(circle at 12% 90%, rgba(169, 184, 255, .13), transparent 30%),
-                linear-gradient(145deg, rgba(18, 22, 32, .38), rgba(18, 22, 32, .18));
+                linear-gradient(145deg, rgba(10, 12, 18, .12), rgba(10, 12, 18, .045));
         }
 
         .air-card { grid-area: air; }
@@ -322,7 +322,7 @@
             margin-bottom: 13px;
             padding: 8px 13px;
             border-radius: 999px;
-            background: rgba(255, 255, 255, .24);
+            background: rgba(255, 255, 255, .10);
             border: 1px solid var(--line-soft);
             color: var(--sub);
             font-size: 14px;
@@ -542,13 +542,13 @@
             inset: -4vmax;
             z-index: 0;
             pointer-events: none;
-            background-image: url("./assets/wallpaper-bg.gif");
-            background-size: min(58vmax, 780px);
+            background-image: url("./assets/wallpaper-bg.jpg");
+            background-size: cover;
             background-position: center;
-            background-repeat: repeat;
-            filter: blur(4px) saturate(145%);
-            opacity: .92;
-            transform: scale(1.02);
+            background-repeat: no-repeat;
+            filter: saturate(105%);
+            opacity: 1;
+            transform: scale(1);
         }
 
         body::after {
@@ -559,13 +559,13 @@
             pointer-events: none;
             background:
                 radial-gradient(circle at 18% 16%, rgba(255, 255, 255, .56), transparent 28%),
-                linear-gradient(135deg, rgba(246, 247, 251, .24), rgba(232, 241, 255, .18) 48%, rgba(244, 229, 255, .22));
+                linear-gradient(135deg, rgba(246, 247, 251, .04), rgba(232, 241, 255, .025) 48%, rgba(244, 229, 255, .04));
         }
 
         :root[data-theme="dark"] body::after {
             background:
                 radial-gradient(circle at 18% 16%, rgba(255, 255, 255, .08), transparent 28%),
-                linear-gradient(135deg, rgba(17, 19, 26, .42), rgba(38, 42, 57, .34) 48%, rgba(45, 39, 58, .38));
+                linear-gradient(135deg, rgba(17, 19, 26, .10), rgba(38, 42, 57, .06) 48%, rgba(45, 39, 58, .08));
         }
 
         .wrap {
@@ -574,6 +574,24 @@
 
         #starfield {
             z-index: 1;
+        }
+        .wrap::before {
+            content: '';
+            position: fixed;
+            inset: 0;
+            z-index: -1;
+            pointer-events: none;
+            background-image:
+                radial-gradient(circle, rgba(255,255,255,.72) 0 1px, transparent 1.8px),
+                radial-gradient(circle, rgba(255,255,255,.44) 0 1px, transparent 2px);
+            background-size: 120px 120px, 180px 180px;
+            animation: softSnow 18s linear infinite;
+            opacity: .34;
+        }
+
+        @keyframes softSnow {
+            from { background-position: 0 -160px, 60px -220px; }
+            to { background-position: 0 420px, 60px 520px; }
         }
     </style>
 </head>
@@ -1003,6 +1021,9 @@
     </script>
 </body>
 </html>
+
+
+
 
 
 
