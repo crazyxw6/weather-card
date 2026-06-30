@@ -32,15 +32,15 @@
             --pink: #f28ab2;
             --green: #2fae83;
             --danger: #e15b74;
-            --control-bg: rgba(255, 255, 255, .14);
+            --control-bg: rgba(255, 255, 255, .08);
             --control-active-bg: rgba(93, 124, 255, .14);
-            --card-bg: linear-gradient(145deg, rgba(255, 255, 255, .08), rgba(255, 255, 255, .025));
-            --item-bg: rgba(255, 255, 255, .08);
+            --card-bg: linear-gradient(145deg, rgba(255, 255, 255, .035), rgba(255, 255, 255, .012));
+            --item-bg: rgba(255, 255, 255, .045);
             --icon-bg: linear-gradient(145deg, rgba(255, 255, 255, .78), rgba(225, 235, 255, .62));
             --aqi-bg: rgba(47, 174, 131, .12);
             --shadow: 0 26px 70px rgba(79, 92, 132, .16), inset 0 1px 0 rgba(255, 255, 255, .85);
             --radius: 22px;
-            --blur: blur(14px) saturate(125%);
+            --blur: blur(0px) saturate(105%);
         }
 
         :root[data-theme="dark"] {
@@ -65,10 +65,10 @@
             --accent-soft: rgba(169, 184, 255, .14);
             --green: #75d8b5;
             --danger: #ff8da2;
-            --control-bg: rgba(255, 255, 255, .10);
+            --control-bg: rgba(10, 12, 18, .10);
             --control-active-bg: rgba(169, 184, 255, .16);
-            --card-bg: linear-gradient(145deg, rgba(10, 12, 18, .12), rgba(10, 12, 18, .045));
-            --item-bg: rgba(255, 255, 255, .08);
+            --card-bg: linear-gradient(145deg, rgba(10, 12, 18, .075), rgba(10, 12, 18, .025));
+            --item-bg: rgba(255, 255, 255, .045);
             --icon-bg: linear-gradient(145deg, rgba(255, 255, 255, .16), rgba(169, 184, 255, .10));
             --aqi-bg: rgba(117, 216, 181, .13);
             --shadow: 0 28px 78px rgba(0, 0, 0, .30), inset 0 1px 0 rgba(255, 255, 255, .16);
@@ -265,8 +265,8 @@
             inset: 0;
             pointer-events: none;
             border-radius: inherit;
-            background: linear-gradient(135deg, rgba(255, 255, 255, .06), transparent 48%, rgba(93, 124, 255, .02));
-            opacity: .20;
+            background: transparent;
+            opacity: 0;
         }
 
         :root[data-theme="dark"] .card::before { background: linear-gradient(135deg, rgba(255, 255, 255, .10), transparent 45%, rgba(169, 184, 255, .08)); }
@@ -282,14 +282,14 @@
             background:
                 radial-gradient(circle at 78% 20%, rgba(255, 255, 255, .74), transparent 28%),
                 radial-gradient(circle at 12% 90%, rgba(239, 224, 255, .52), transparent 30%),
-                linear-gradient(145deg, rgba(255, 255, 255, .08), rgba(241, 246, 255, .025));
+                linear-gradient(145deg, rgba(255, 255, 255, .035), rgba(241, 246, 255, .012));
         }
 
         :root[data-theme="dark"] .now-card {
             background:
                 radial-gradient(circle at 78% 20%, rgba(255, 255, 255, .14), transparent 28%),
                 radial-gradient(circle at 12% 90%, rgba(169, 184, 255, .13), transparent 30%),
-                linear-gradient(145deg, rgba(10, 12, 18, .12), rgba(10, 12, 18, .045));
+                linear-gradient(145deg, rgba(10, 12, 18, .075), rgba(10, 12, 18, .025));
         }
 
         .air-card { grid-area: air; }
@@ -322,7 +322,7 @@
             margin-bottom: 13px;
             padding: 8px 13px;
             border-radius: 999px;
-            background: rgba(255, 255, 255, .10);
+            background: rgba(255, 255, 255, .045);
             border: 1px solid var(--line-soft);
             color: var(--sub);
             font-size: 14px;
@@ -557,15 +557,11 @@
             inset: 0;
             z-index: 0;
             pointer-events: none;
-            background:
-                radial-gradient(circle at 18% 16%, rgba(255, 255, 255, .56), transparent 28%),
-                linear-gradient(135deg, rgba(246, 247, 251, .04), rgba(232, 241, 255, .025) 48%, rgba(244, 229, 255, .04));
+            background: transparent;
         }
 
         :root[data-theme="dark"] body::after {
-            background:
-                radial-gradient(circle at 18% 16%, rgba(255, 255, 255, .08), transparent 28%),
-                linear-gradient(135deg, rgba(17, 19, 26, .10), rgba(38, 42, 57, .06) 48%, rgba(45, 39, 58, .08));
+            background: transparent;
         }
 
         .wrap {
@@ -586,7 +582,7 @@
                 radial-gradient(circle, rgba(255,255,255,.44) 0 1px, transparent 2px);
             background-size: 120px 120px, 180px 180px;
             animation: softSnow 18s linear infinite;
-            opacity: .34;
+            opacity: .20;
         }
 
         @keyframes softSnow {
@@ -1021,6 +1017,7 @@
     </script>
 </body>
 </html>
+
 
 
 
