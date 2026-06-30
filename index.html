@@ -119,10 +119,10 @@
 
         .top {
             display: grid;
-            grid-template-columns: auto 1fr minmax(240px, 340px) auto auto auto;
+            grid-template-columns: auto 1fr auto auto auto;
             grid-template-areas:
-                "title space music city theme refresh"
-                "stamp space music city theme refresh";
+                "title space city theme refresh"
+                "stamp space city theme refresh";
             align-items: center;
             gap: 4px 10px;
             padding: 2px 2px 8px;
@@ -140,8 +140,6 @@
             color: var(--muted);
             font-size: 12px;
         }
-
-        .music-player,
         .city-trigger,
         .theme-toggle,
         .refresh {
@@ -149,179 +147,6 @@
             background: var(--control-bg);
             backdrop-filter: none;
             -webkit-backdrop-filter: none;
-        }
-
-        .music-player {
-            grid-area: music;
-            justify-self: end;
-            width: min(340px, 34vw);
-            min-height: 36px;
-            display: flex;
-            align-items: center;
-            gap: 9px;
-            padding: 6px 9px;
-            border-radius: 999px;
-        }
-
-        .music-player.playing {
-            border-color: rgba(56, 189, 248, .55);
-            background: var(--control-active-bg);
-        }
-
-        .music-toggle {
-            width: 25px;
-            height: 25px;
-            border: 0;
-            border-radius: 999px;
-            background: var(--accent-soft);
-            color: var(--accent);
-            font-size: 11px;
-            font-weight: 800;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            flex-shrink: 0;
-        }
-
-        .music-toggle:disabled {
-            opacity: .55;
-        }
-
-        .music-text {
-            min-width: 0;
-            flex: 1;
-            line-height: 1.1;
-        }
-
-        .music-title {
-            display: block;
-            color: var(--text);
-            font-size: 12px;
-            font-weight: 700;
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-        }
-
-        .music-sub {
-            display: block;
-            margin-top: 2px;
-            color: var(--muted);
-            font-size: 10px;
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-        }
-
-        .volume {
-            width: 86px;
-            height: 4px;
-            accent-color: var(--accent);
-            flex-shrink: 0;
-        }
-        .lyrics-dock {
-            --lyric-progress: 0%;
-            display: grid;
-            grid-template-columns: 128px minmax(0, 1fr) 62px;
-            align-items: center;
-            gap: 12px;
-            min-height: 92px;
-            padding: 12px 14px;
-            border: 1px solid var(--line);
-            border-radius: var(--radius);
-            background: var(--card-bg);
-            box-shadow: var(--shadow);
-            backdrop-filter: none;
-            -webkit-backdrop-filter: none;
-        }
-
-        .lyrics-label span {
-            display: block;
-            color: var(--muted);
-            font-size: 10px;
-            font-weight: 700;
-            letter-spacing: .08em;
-        }
-
-        .lyrics-label strong {
-            display: block;
-            margin-top: 4px;
-            color: var(--text);
-            font-size: 13px;
-            line-height: 1.2;
-        }
-
-        .lyrics-label em {
-            display: block;
-            margin-top: 2px;
-            color: var(--muted);
-            font-size: 11px;
-            font-style: normal;
-        }
-
-        .lyrics-stage {
-            min-width: 0;
-            text-align: center;
-        }
-
-        .lyric-near {
-            display: none;
-        }
-
-        .lyric-current {
-            padding: 0;
-        }
-
-        .lyric-kr-wrap {
-            position: relative;
-            display: block;
-            max-width: 100%;
-            white-space: normal;
-            overflow: visible;
-            vertical-align: top;
-        }
-
-        .lyric-kr-base,
-        .lyric-kr-fill {
-            display: block;
-            font-size: 17px;
-            font-weight: 800;
-            letter-spacing: 0;
-            line-height: 1.24;
-            white-space: normal;
-        }
-
-        .lyric-kr-base {
-            color: var(--accent);
-            opacity: 1;
-            text-shadow: 0 0 22px rgba(56, 189, 248, .22);
-        }
-
-        .lyric-kr-fill {
-            display: none;
-        }
-
-        .lyric-cn {
-            margin-top: 5px;
-            color: var(--sub);
-            font-size: 12px;
-            line-height: 1.35;
-            white-space: normal;
-            overflow: hidden;
-            display: -webkit-box;
-            -webkit-line-clamp: 2;
-            -webkit-box-orient: vertical;
-        }
-        .lyrics-clock {
-            justify-self: end;
-            min-width: 58px;
-            padding: 6px 8px;
-            border-radius: 999px;
-            background: var(--item-bg);
-            color: var(--muted);
-            font-size: 11px;
-            font-variant-numeric: tabular-nums;
-            text-align: center;
         }
 
         .city-select {
@@ -842,21 +667,6 @@
                 grid-template-areas:
                     "title space city theme refresh"
                     "stamp space city theme refresh"
-                    "music music music music music";
-            }
-
-            .music-player {
-                justify-self: start;
-                width: min(420px, 100%);
-                margin-top: 6px;
-            }
-
-            .lyrics-dock {
-                grid-template-columns: 120px minmax(0, 1fr);
-            }
-
-            .lyrics-clock {
-                display: none;
             }
 
             #content {
@@ -897,44 +707,14 @@
                 grid-template-areas:
                     "title city theme refresh"
                     "stamp stamp stamp stamp"
-                    "music music music music";
             }
 
             .top h1 {
                 font-size: 22px;
             }
 
-            .music-player {
-                width: 100%;
-                justify-self: stretch;
-            }
-
-            .volume {
-                width: 92px;
-            }
-
-            .lyrics-dock {
-                grid-template-columns: 1fr;
-                min-height: 0;
-                padding: 12px;
-                gap: 8px;
-            }
-
-            .lyrics-label {
-                text-align: center;
-            }
-
-            .lyric-kr-base,
-            .lyric-kr-fill {
-                font-size: 17px;
-            }
-
             .daily-list {
                 grid-template-columns: 1fr;
-            }
-
-            .lyric-cn {
-                font-size: 12px;
             }
 
             #content {
@@ -992,18 +772,7 @@
     <div class="wrap">
         <div class="top">
             <h1>天气卡片</h1>
-
-            <div class="music-player" id="musicPlayer">
-                <audio id="bgMusic" src="./assets/music.mp3" preload="auto" loop autoplay playsinline></audio>
-                <button class="music-toggle" id="musicToggle" type="button" aria-label="播放音乐">▶</button>
-                <div class="music-text">
-                    <span class="music-title" id="musicTitle">Walking without U</span>
-                    <span class="music-sub" id="musicStatus">点击任意位置播放</span>
-                </div>
-                <input class="volume" id="volumeControl" type="range" min="0" max="1" step="0.01" value="0.18" aria-label="音量">
-            </div>
-
-            <div class="city-select" id="citySelect">
+<div class="city-select" id="citySelect">
                 <button class="city-trigger" id="cityTrigger">上海 <span style="font-size:10px;">▾</span></button>
                 <div class="city-panel" id="cityPanel">
                     <div class="city-panel-title">热门城市</div>
@@ -1015,24 +784,7 @@
             <button class="refresh" id="refresh">↻</button>
             <div class="stamp" id="stamp"></div>
         </div>
-        <div class="lyrics-dock" id="lyricsDock">
-            <div class="lyrics-label">
-                <span>TIMED LYRICS</span>
-                <strong>이별을 걷는다</strong>
-                <em>走向离别</em>
-            </div>
-            <div class="lyrics-stage">
-                <div class="lyric-current">
-                    <div class="lyric-kr-wrap">
-                        <span class="lyric-kr-base" id="lyricCurrentKr">点击播放音乐</span>
-                        <span class="lyric-kr-fill" id="lyricCurrentKrFill">点击播放音乐</span>
-                    </div>
-                    <div class="lyric-cn" id="lyricCurrentCn">字幕时间轴同步显示</div>
-                </div>
-            </div>
-            <div class="lyrics-clock" id="lyricClock">00:00</div>
-        </div>
-        <div id="content">
+<div id="content">
             <div class="loading">
                 <div class="dot"></div>
                 <div class="dot"></div>
@@ -1376,183 +1128,6 @@
                 draw();
             }
 
-
-            var LYRICS_LRC = "[ti:이별을 걷는다 (走向离别)]\n[ar:모던 쥬스 (Modern Juice)]\n[al:장미빛 연인들 OST (蔷薇色的恋人们 OST)]\n[by:YouTube SRT TpzWg2igD9w]\n[00:14.44]가끔 생각이 날 때 자꾸 보고 싶을 때 너의 얼굴이 아른거릴 때 고장 난 시계처럼 / 偶尔想起你的时候，总是想见你的时候，你的脸庞浮现，就像坏掉的时钟一样\n[00:30.84]멈춰버린 기억 속에서 너를 찾아내곤 해 너는 웃고 있지만 슬퍼 보여 애써 참고 / 在静止的记忆里，我总会找到你；你笑着却看起来悲伤，努力忍耐着\n[00:49.08]있지만 아파 보여 미처 내가 몰랐던 너의 사랑을 이제 하나씩 느껴 내 사랑이 / 但你看起来很痛；我曾未察觉的你的爱，现在一点点感受到了，我的爱\n[01:07.96]조금 느려서 이제야 너를 따라서 한걸음 또 한걸음 이별을 걷는다 그 오랜 / 因为有些迟钝，直到现在才跟随着你，一步又一步走向离别，那漫长的\n[01:20.88]시간이 걸려도 언제나 너의 뒤에서 돌아와 주길 기다려본다 / 即使要花上很久很久，我也会一直在你身后，等待你回来\n[01:45.52]이곳에서 가슴이 답답하고 마음이 또 먹먹해지면 네가 네가 그립다 오래된 / 就在这里，当胸口发闷、心里又变得沉甸甸时，我想念你，想念着你，像老旧的\n[02:00.84]필름처럼 / 胶片一样\n[02:05.24]따스하게 나를 사랑해주던 네 모습이 너무나도 선명해 손 내밀면 손끝에 / 曾温暖地爱着我的你的模样，是那样清晰，仿佛一伸手就能在指尖\n[02:20.64]닿을 것만 같아 내 사랑이 너를 부른다 이제야 너를 찾는다 한번만 꼭 한번만 / 触碰到；我的爱在呼唤你，直到现在才寻找你，哪怕一次，就一次\n[02:36.36]널 보고 싶다고 그 오랜 시간이 걸려도 언제나 너의 뒤에서 돌아와 주길 / 我想见你；即使要花上漫长的时间，我也会一直在你身后，盼你回来\n[02:50.60]기다려본다 이곳에서 네가 아니면 그 누구도 빈자리를 채울 수 없어 그대로 / 我会在这里等待；如果不是你，谁也无法填补这个空位，就这样\n[03:05.04]너여야 해 너여야 / 必须是你，必须是你\n[03:10.76]만 해 내 사랑이 조금 느려서 이제야 너를 따라서 한걸음 또 한걸음 이별을 / 只能是你；因为我的爱有些迟钝，直到现在才跟随着你，一步又一步走向离别\n[03:23.52]걷는다 그 오랜 시간이 걸려도 언제나 너의 뒤에서 돌아와 주길 기다려본다 / 即使要花上漫长的时间，我也会一直在你身后，等待你回来\n[03:38.68]이곳에서 / 就在这里\n[03:43.20]이곳에서 이곳에서 / 就在这里，就在这里\n[03:49.88]이곳에서 이곳에서 / 就在这里，就在这里";
-
-            function parseLyrics(lrc) {
-                return lrc.split(/\r?\n/).map(function(line) {
-                    var match = line.match(/^\[(\d{2}):(\d{2}(?:\.\d+)?)\](.*)$/);
-                    if (!match) return null;
-
-                    var text = match[3].trim();
-                    if (!text) return null;
-
-                    var parts = text.split(/\s+\/\s+/);
-                    return {
-                        time: Number(match[1]) * 60 + Number(match[2]),
-                        kr: (parts[0] || '').trim(),
-                        cn: (parts[1] || '').trim()
-                    };
-                }).filter(Boolean).sort(function(a, b) {
-                    return a.time - b.time;
-                });
-            }
-
-            function formatLyricTime(seconds) {
-                var total = Math.max(0, Math.floor(seconds || 0));
-                var m = String(Math.floor(total / 60)).padStart(2, '0');
-                var s = String(total % 60).padStart(2, '0');
-                return m + ':' + s;
-            }
-
-            function setupLyrics(audio) {
-                var currentKr = document.getElementById('lyricCurrentKr');
-                var currentKrFill = document.getElementById('lyricCurrentKrFill');
-                var currentCn = document.getElementById('lyricCurrentCn');
-                var clock = document.getElementById('lyricClock');
-                var lines = parseLyrics(LYRICS_LRC);
-                var activeIndex = -1;
-                var rafId = 0;
-
-                if (!audio || !lines.length) return;
-
-                function setLine(index) {
-                    var line = lines[index] || lines[0];
-                    currentKr.textContent = line.kr || '♪';
-                    currentKrFill.textContent = '';
-                    currentCn.textContent = line.cn || 'MODERN JUICE';
-                }
-
-                function findLineIndex(time) {
-                    var index = 0;
-                    for (var i = 0; i < lines.length; i++) {
-                        if (time >= lines[i].time) index = i;
-                        else break;
-                    }
-                    return index;
-                }
-
-                function updateLyrics() {
-                    var time = audio.currentTime || 0;
-                    var index = findLineIndex(time);
-
-                    if (index !== activeIndex) {
-                        activeIndex = index;
-                        setLine(index);
-                    }
-
-                    if (clock) clock.textContent = formatLyricTime(time);
-                }
-
-                function loop() {
-                    updateLyrics();
-                    rafId = requestAnimationFrame(loop);
-                }
-
-                setLine(0);
-                updateLyrics();
-                cancelAnimationFrame(rafId);
-                loop();
-                audio.addEventListener('seeked', updateLyrics);
-                audio.addEventListener('play', updateLyrics);
-            }
-            function setupMusic() {
-                var player = document.getElementById('musicPlayer');
-                var audio = document.getElementById('bgMusic');
-                var toggle = document.getElementById('musicToggle');
-                var volume = document.getElementById('volumeControl');
-                var title = document.getElementById('musicTitle');
-                var status = document.getElementById('musicStatus');
-
-                if (!player || !audio || !toggle || !volume) return;
-
-                setupLyrics(audio);
-
-                var defaultVolume = 0.18;
-                var savedVolume = localStorage.getItem('weatherCardVolumeV2');
-                var savedNumber = Number(savedVolume);
-
-                audio.volume = savedVolume === null || Number.isNaN(savedNumber)
-                    ? defaultVolume
-                    : Math.max(0, Math.min(1, savedNumber));
-                volume.value = audio.volume;
-                audio.autoplay = true;
-
-                function setPlaying(isPlaying) {
-                    toggle.textContent = isPlaying ? 'Ⅱ' : '▶';
-                    player.classList.toggle('playing', isPlaying);
-                    status.textContent = isPlaying ? 'PLAYING' : '点击任意位置播放';
-                }
-
-                function tryAutoPlay() {
-                    if (audio.dataset.triedAutoPlay === '1') return;
-                    audio.dataset.triedAutoPlay = '1';
-                    status.textContent = 'AUTO PLAY';
-
-                    audio.play().then(function() {
-                        setPlaying(true);
-                    }).catch(function() {
-                        setPlaying(false);
-                    });
-                }
-
-                function playByFirstAction(e) {
-                    if (e.target.closest('#musicPlayer')) return;
-                    if (!audio.paused) return;
-
-                    audio.play().then(function() {
-                        setPlaying(true);
-                        document.removeEventListener('pointerdown', playByFirstAction);
-                    }).catch(function() {
-                        setPlaying(false);
-                    });
-                }
-
-                toggle.addEventListener('click', async function() {
-                    if (audio.paused) {
-                        try {
-                            status.textContent = 'LOADING';
-                            await audio.play();
-                            setPlaying(true);
-                        } catch (e) {
-                            status.textContent = '点击后再试一次';
-                            setPlaying(false);
-                        }
-                    } else {
-                        audio.pause();
-                        setPlaying(false);
-                    }
-                });
-
-                volume.addEventListener('input', function() {
-                    audio.volume = Number(volume.value);
-                    localStorage.setItem('weatherCardVolumeV2', String(audio.volume));
-                });
-
-                audio.addEventListener('canplay', tryAutoPlay, { once: true });
-
-                audio.addEventListener('play', function() {
-                    setPlaying(true);
-                });
-
-                audio.addEventListener('pause', function() {
-                    setPlaying(false);
-                });
-
-                audio.addEventListener('error', function() {
-                    toggle.textContent = '×';
-                    toggle.disabled = true;
-                    player.classList.remove('playing');
-                    title.textContent = '未找到 music.mp3';
-                    status.textContent = '请放到 assets 文件夹';
-                });
-
-                document.addEventListener('pointerdown', playByFirstAction);
-                window.addEventListener('load', function() {
-                    setTimeout(tryAutoPlay, 400);
-                });
-            }
-
             var cityTrigger = document.getElementById('cityTrigger');
             var cityPanel = document.getElementById('cityPanel');
             var cityGrid = document.getElementById('cityGrid');
@@ -1579,7 +1154,6 @@
             document.getElementById('refresh').addEventListener('click', refreshData);
 
             setupTheme();
-            setupMusic();
             startStarfield();
             renderCityMenu('01012601', '');
             refreshData();
@@ -1587,6 +1161,8 @@
     </script>
 </body>
 </html>
+
+
 
 
 
