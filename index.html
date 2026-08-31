@@ -316,13 +316,14 @@
             font-weight: 750;
         }
 
+        /* 这是修改了 grid-template-areas 的部分 */
         #content {
             flex: 0 0 auto;
             display: grid;
             grid-template-columns: repeat(12, minmax(0, 1fr));
             grid-template-areas:
-                "now now now now now hourly hourly hourly hourly air air air"
-                "now now now now now daily daily daily daily sun sun sun"
+                "now now now now now hourly hourly hourly hourly hourly hourly hourly"
+                "now now now now now air air air air sun sun sun"
                 "index index index index index daily daily daily daily daily daily daily";
             grid-template-rows: minmax(170px, auto) minmax(150px, auto) minmax(230px, auto);
             gap: 16px;
@@ -715,7 +716,7 @@
             <button class="refresh" id="refresh">↻</button>
             <div class="stamp" id="stamp"></div>
         </div>
-<div id="content">
+        <div id="content">
             <div class="loading">
                 <div class="dot"></div>
                 <div class="dot"></div>
@@ -894,7 +895,6 @@
                 document.getElementById('content').innerHTML = h;
                 setupHourlyScroll();
             }
-
 
             function setupHourlyScroll() {
                 var scrollers = document.querySelectorAll('.hourly');
@@ -1122,17 +1122,3 @@
     </script>
 </body>
 </html>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
