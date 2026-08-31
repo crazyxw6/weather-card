@@ -317,14 +317,14 @@
         }
 
         #content {
-            flex: 1;
+            flex: 0 0 auto;
             display: grid;
             grid-template-columns: repeat(12, minmax(0, 1fr));
             grid-template-areas:
                 "now now now now now hourly hourly hourly hourly air air air"
                 "now now now now now daily daily daily daily sun sun sun"
                 "index index index index index daily daily daily daily daily daily daily";
-            grid-template-rows: minmax(170px, auto) minmax(150px, auto) minmax(230px, 1fr);
+            grid-template-rows: minmax(170px, auto) minmax(150px, auto) minmax(230px, auto);
             gap: 16px;
             align-items: stretch;
         }
@@ -1122,8 +1122,6 @@
     </script>
 </body>
 </html>
-
-
 
 
 
